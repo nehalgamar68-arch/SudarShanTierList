@@ -42,30 +42,44 @@
         .leaderboard { display: flex; flex-direction: column; gap: 12px; }
         .player-card { background: #121824; border: 1px solid #1f2a3e; border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: transform 0.2s; }
         .player-card:hover { transform: translateY(-2px); border-color: #f59e0b; }
-        .rank-1 { border-left: 4px solid #f59e0b; }
+        
+        /* Gold Position 1 Glow */
+        .rank-1 { border-left: 5px solid #f59e0b; box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.15); }
         .rank-tag { font-size: 28px; font-weight: 900; font-style: italic; color: #ffffff; width: 35px; }
+        .rank-1 .rank-tag { color: #f59e0b; }
+
         .player-avatar img { width: 50px; height: 50px; border-radius: 8px; background: #1a2333; }
         .player-info { flex-grow: 1; }
         .player-name { font-size: 18px; font-weight: 800; }
         .player-title { font-size: 12px; color: #64748b; font-weight: 600; }
         .text-gold { color: #f59e0b; }
-        .points { color: #475569; }
+        .points { color: #64748b; }
 
         .region-tag { padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 12px; }
         .region-tag.na { background: #b91c1c; color: #fff; }
         .region-tag.eu { background: #15803d; color: #fff; }
 
+        /* Icon Colors Fix */
+        .c-vanilla { color: #d97706; }
+        .c-pot { color: #ec4899; }
+        .c-smp { color: #10b981; }
+        .c-sword { color: #3b82f6; }
+        .c-nethop { color: #8b5cf6; }
+        .c-axe { color: #f97316; }
+        .c-uhc { color: #ef4444; }
+
         .tier-badges { display: flex; gap: 8px; background: #0d121b; padding: 8px 12px; border-radius: 10px; }
         .badge { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-        .badge i { font-size: 16px; color: #8a99ad; }
-        .badge small { font-size: 9px; font-weight: 800; }
-        .ht { color: #f59e0b; }
-        .lt { color: #3b82f6; }
+        .badge i { font-size: 16px; }
+        .badge small { font-size: 10px; font-weight: 900; padding: 1px 4px; border-radius: 3px; }
+        .ht { color: #f59e0b; background: rgba(245, 158, 11, 0.15); }
+        .lt { color: #3b82f6; background: rgba(59, 130, 246, 0.15); }
 
         /* Modal Overlay */
-        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: #121824; border: 1px solid #1f2a3e; padding: 25px; border-radius: 15px; width: 350px; text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 20px; cursor: pointer; color: #8a99ad; }
+        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
+        .modal { background: #121824; border: 1px solid #28334a; padding: 25px; border-radius: 15px; width: 400px; text-align: center; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.5); }
+        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #8a99ad; }
+        .modal-tier-box { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; background: #0b0e14; padding: 12px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -77,7 +91,7 @@
         </div>
         <nav class="nav-links">
             <a href="#" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="#" class="nav-item active"><i class="fa-solid fa-trophy"></i> Rankings</a>
+            <a href="#" class="nav-item active"><i class="fa-solid fa-trophy text-gold"></i> Rankings</a>
             <a href="https://discord.gg/zJbyq9TJR" target="_blank" class="nav-item"><i class="fa-brands fa-discord"></i> Discord</a>
         </nav>
         <div class="search-box">
@@ -92,14 +106,14 @@
         <!-- Category Tabs -->
         <div class="category-tabs">
             <button class="tab-btn active"><i class="fa-solid fa-trophy text-gold"></i> Overall</button>
-            <button class="tab-btn"><i class="fa-solid fa-fire"></i> LTMs</button>
-            <button class="tab-btn"><i class="fa-solid fa-cube"></i> Vanilla</button>
-            <button class="tab-btn"><i class="fa-solid fa-heart"></i> UHC</button>
-            <button class="tab-btn"><i class="fa-solid fa-flask"></i> Pot</button>
-            <button class="tab-btn"><i class="fa-solid fa-shield"></i> NethOP</button>
-            <button class="tab-btn"><i class="fa-solid fa-tree"></i> SMP</button>
-            <button class="tab-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Sword</button>
-            <button class="tab-btn"><i class="fa-solid fa-gavel"></i> Axe</button>
+            <button class="tab-btn"><i class="fa-solid fa-fire c-axe"></i> LTMs</button>
+            <button class="tab-btn"><i class="fa-solid fa-cube c-vanilla"></i> Vanilla</button>
+            <button class="tab-btn"><i class="fa-solid fa-heart c-uhc"></i> UHC</button>
+            <button class="tab-btn"><i class="fa-solid fa-flask c-pot"></i> Pot</button>
+            <button class="tab-btn"><i class="fa-solid fa-shield c-nethop"></i> NethOP</button>
+            <button class="tab-btn"><i class="fa-solid fa-tree c-smp"></i> SMP</button>
+            <button class="tab-btn"><i class="fa-solid fa-wand-magic-sparkles c-sword"></i> Sword</button>
+            <button class="tab-btn"><i class="fa-solid fa-gavel c-axe"></i> Axe</button>
         </div>
 
         <!-- Info / Server IP Bar -->
@@ -119,7 +133,7 @@
         <div class="leaderboard" id="leaderboard">
             
             <!-- Player 1 -->
-            <div class="player-card rank-1" onclick="openStats('Marlowww', 'Combat Grandmaster', '450', 'NA', 'https://mc-heads.net/avatar/Marlowww/100')">
+            <div class="player-card rank-1" onclick="openStats('Marlowww', 'Combat Grandmaster', '450', 'NA', 'https://mc-heads.net/avatar/Marlowww/100', 'p1')">
                 <div class="rank-tag">1.</div>
                 <div class="player-avatar">
                     <img src="https://mc-heads.net/avatar/Marlowww/100" alt="Marlowww">
@@ -129,18 +143,18 @@
                     <p class="player-title"><i class="fa-solid fa-gem text-gold"></i> Combat Grandmaster <span class="points">(450 points)</span></p>
                 </div>
                 <div class="region-tag na">NA</div>
-                <div class="tier-badges">
-                    <span class="badge"><i class="fa-solid fa-cube"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-flask"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-tree"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-shield"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-gavel"></i><small class="lt">LT1</small></span>
+                <div class="tier-badges" id="p1-badges">
+                    <span class="badge"><i class="fa-solid fa-cube c-vanilla"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-flask c-pot"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-tree c-smp"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles c-sword"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-shield c-nethop"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-gavel c-axe"></i><small class="lt">LT1</small></span>
                 </div>
             </div>
 
             <!-- Player 2 -->
-            <div class="player-card" onclick="openStats('ItzRealMe', 'Combat Master', '330', 'NA', 'https://mc-heads.net/avatar/ItzRealMe/100')">
+            <div class="player-card" onclick="openStats('ItzRealMe', 'Combat Master', '330', 'NA', 'https://mc-heads.net/avatar/ItzRealMe/100', 'p2')">
                 <div class="rank-tag">2.</div>
                 <div class="player-avatar">
                     <img src="https://mc-heads.net/avatar/ItzRealMe/100" alt="ItzRealMe">
@@ -150,17 +164,17 @@
                     <p class="player-title"><i class="fa-solid fa-gem text-gold"></i> Combat Master <span class="points">(330 points)</span></p>
                 </div>
                 <div class="region-tag na">NA</div>
-                <div class="tier-badges">
-                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles"></i><small class="ht">HT3</small></span>
-                    <span class="badge"><i class="fa-solid fa-shield"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-cube"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-flask"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-gavel"></i><small class="lt">LT2</small></span>
+                <div class="tier-badges" id="p2-badges">
+                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles c-sword"></i><small class="ht">HT3</small></span>
+                    <span class="badge"><i class="fa-solid fa-shield c-nethop"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-cube c-vanilla"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-flask c-pot"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-gavel c-axe"></i><small class="lt">LT2</small></span>
                 </div>
             </div>
 
             <!-- Player 3 -->
-            <div class="player-card" onclick="openStats('coldified', 'Combat Master', '326', 'EU', 'https://mc-heads.net/avatar/coldified/100')">
+            <div class="player-card" onclick="openStats('coldified', 'Combat Master', '326', 'EU', 'https://mc-heads.net/avatar/coldified/100', 'p3')">
                 <div class="rank-tag">3.</div>
                 <div class="player-avatar">
                     <img src="https://mc-heads.net/avatar/coldified/100" alt="coldified">
@@ -170,11 +184,11 @@
                     <p class="player-title"><i class="fa-solid fa-gem text-gold"></i> Combat Master <span class="points">(326 points)</span></p>
                 </div>
                 <div class="region-tag eu">EU</div>
-                <div class="tier-badges">
-                    <span class="badge"><i class="fa-solid fa-flask"></i><small class="lt">LT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-cube"></i><small class="ht">LT3</small></span>
-                    <span class="badge"><i class="fa-solid fa-heart"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-gavel"></i><small class="lt">LT1</small></span>
+                <div class="tier-badges" id="p3-badges">
+                    <span class="badge"><i class="fa-solid fa-flask c-pot"></i><small class="lt">LT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-cube c-vanilla"></i><small class="ht">LT3</small></span>
+                    <span class="badge"><i class="fa-solid fa-heart c-uhc"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-gavel c-axe"></i><small class="lt">LT1</small></span>
                 </div>
             </div>
 
@@ -185,22 +199,25 @@
     <div class="modal-overlay" id="playerModal">
         <div class="modal">
             <span class="close-btn" onclick="closeStats()">&times;</span>
-            <img id="modalImg" src="" style="width:80px; height:80px; border-radius:10px; margin-bottom:10px;">
+            <img id="modalImg" src="" style="width:80px; height:80px; border-radius:12px; margin-bottom:10px;">
             <h2 id="modalName">Name</h2>
-            <p id="modalRank" style="color:#f59e0b; margin-top:5px;"></p>
-            <p id="modalPoints" style="color:#8a99ad; margin:10px 0;"></p>
-            <p id="modalRegion" style="font-weight:bold;"></p>
+            <p id="modalRank" style="color:#f59e0b; margin-top:5px; font-weight: bold;"></p>
+            <p id="modalPoints" style="color:#8a99ad; margin:5px 0; font-size:14px;"></p>
+            <p id="modalRegion" style="font-weight:bold; font-size:13px; color:#10b981;"></p>
+            
+            <h4 style="margin-top:15px; text-align:left; font-size:13px; color:#8a99ad;">PLAYER TIERS:</h4>
+            <div class="modal-tier-box" id="modalTiers">
+                <!-- Tiers inject directly from player card -->
+            </div>
         </div>
     </div>
 
     <script>
-        // Copy IP
         function copyIp() {
             navigator.clipboard.writeText("play.nglord.fun");
             alert("Copied Server IP: play.nglord.fun");
         }
 
-        // Live Search Filter
         document.getElementById('searchInput').addEventListener('keyup', function() {
             let value = this.value.toLowerCase();
             let cards = document.querySelectorAll('.player-card');
@@ -215,13 +232,17 @@
             });
         });
 
-        // Player Stats Modal
-        function openStats(name, title, points, region, img) {
+        function openStats(name, title, points, region, img, badgeId) {
             document.getElementById('modalName').innerText = name;
             document.getElementById('modalRank').innerText = title;
             document.getElementById('modalPoints').innerText = points + " Tier Points";
             document.getElementById('modalRegion').innerText = "Region: " + region;
             document.getElementById('modalImg').src = img;
+
+            // Copy exact colorful badges into the modal
+            let badgesHtml = document.getElementById(badgeId + '-badges').innerHTML;
+            document.getElementById('modalTiers').innerHTML = badgesHtml;
+
             document.getElementById('playerModal').style.display = 'flex';
         }
 
