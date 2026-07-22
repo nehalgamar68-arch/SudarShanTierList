@@ -8,3 +8,18 @@ const SVGS = {
     axe: `<img src="https://mctiers.com/assets/modes/axe.png" width="26" height="26">`,
     mace: `<img src="https://mctiers.com/assets/modes/mace.png" width="26" height="26">`
 };
+{
+  "username": "catboymuse",
+  "region": "NA",
+  "points": 0,
+  "ranks": {
+    "sword": "HT1",
+    "crystal": "HT1",
+    "nethop": "HT1",
+    "axe": "HT1",
+    "vanilla": "HT1",
+    "pot": "LT1",
+    "uhc": "LT1",
+    "mace": "HT1"
+  }
+}
