@@ -660,12 +660,13 @@
             grid.innerHTML = '';
 
             const gmList = [
-                { id: 'sword', name: 'Sword PvP' },
-                { id: 'axe', name: 'Axe & Bow' },
+                { id: 'sword', name: 'Sword' },
+                { id: 'axe', name: 'Axe & Shild' },
                 { id: 'crystal', name: 'Crystal PvP' },
-                { id: 'pot', name: 'PotPvP / Speed' },
+                { id: 'pot', name: 'DiaPot' },
                 { id: 'lifesteal', name: 'Lifesteal' },
                 { id: 'netherite', name: 'Netherite OP' }
+                { id: 'sword', name: 'SMPKIT' },
             ];
 
             gmList.forEach(gm => {
