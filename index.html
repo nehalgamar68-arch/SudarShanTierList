@@ -3,245 +3,1070 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUDARSHAN MCTIERS - Rankings</title>
+    <title>SUDARSHAN MCTIERS - Official Minecraft Tier List & Rankings</title>
+    <!-- FontAwesome & Google Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,800&display=swap" rel="stylesheet">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #0b0e14; color: #ffffff; padding-bottom: 50px; }
+        /* ==========================================================================
+           1. CORE & RESET STYLES
+           ========================================================================== */
+        :root {
+            --bg-dark: #07090e;
+            --bg-card: #0f141d;
+            --bg-card-hover: #161e2b;
+            --bg-tab: #121824;
+            --bg-tab-active: #1e283b;
+            --border-color: #1a2332;
+            --border-highlight: #2c3b54;
+            --accent-gold: #f59e0b;
+            --accent-gold-glow: rgba(245, 158, 11, 0.25);
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-purple: #8b5cf6;
+            --text-main: #ffffff;
+            --text-muted: #8a99ad;
+            --text-sub: #4b586e;
+            --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.25s ease;
+        }
 
-        /* Navbar */
-        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px; background-color: #121721; border-bottom: 1px solid #1e2638; }
-        .logo { font-weight: 900; font-size: 24px; letter-spacing: 1px; }
-        .logo-mc { color: #f59e0b; }
-        .logo-tiers { color: #ffffff; }
-        .nav-links { display: flex; gap: 25px; }
-        .nav-item { color: #8a99ad; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { color: #ffffff; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+            user-select: none;
+            -webkit-user-drag: none;
+        }
 
-        .search-box { background: #1a2232; padding: 8px 14px; border-radius: 8px; display: flex; align-items: center; gap: 10px; border: 1px solid #28334a; color: #8a99ad; }
-        .search-box input { background: transparent; border: none; outline: none; color: white; width: 180px; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: 60px;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.03) 0%, transparent 40%);
+        }
 
-        /* Main Container */
-        .main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-gold);
+        }
 
-        /* Category Tabs */
-        .category-tabs { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 15px; }
-        .tab-btn { background: #141b27; border: 1px solid #222d42; color: #8a99ad; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; white-space: nowrap; }
-        .tab-btn:hover, .tab-btn.active { background: #1e283d; color: #ffffff; border-color: #f59e0b; }
-        .tab-btn img { width: 20px; height: 20px; object-fit: contain; }
+        /* ==========================================================================
+           2. NAVBAR & NAVIGATION
+           ========================================================================== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 40px;
+            background-color: rgba(15, 20, 29, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-        /* Info Bar */
-        .info-bar { display: flex; justify-content: flex-end; align-items: center; gap: 15px; margin: 20px 0; }
-        .info-btn { background: #172131; border: 1px solid #28364d; color: #fff; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-        .server-ip-card { background: #141c28; border: 1px solid #222d40; padding: 6px 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .pvp-badge { background: #dc2626; font-size: 10px; font-weight: 900; padding: 3px 6px; border-radius: 4px; }
-        .ip-label { display: block; font-size: 9px; color: #64748b; font-weight: 800; }
-        .ip-address { font-size: 12px; font-weight: 700; color: #f59e0b; }
-        .discord-btn { color: #5865F2; font-size: 20px; text-decoration: none; display: flex; align-items: center; margin-left: 5px; }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
 
-        /* Player List */
-        .leaderboard { display: flex; flex-direction: column; gap: 12px; }
-        .player-card { background: #121824; border: 1px solid #1f2a3e; border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: transform 0.2s; }
-        .player-card:hover { transform: translateY(-2px); border-color: #f59e0b; }
-        
-        .rank-1 { border-left: 5px solid #f59e0b; box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.15); }
-        .rank-tag { font-size: 28px; font-weight: 900; font-style: italic; color: #ffffff; width: 35px; }
-        .rank-1 .rank-tag { color: #f59e0b; }
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--accent-gold-glow);
+        }
 
-        .player-avatar img { width: 50px; height: 50px; border-radius: 8px; background: #1a2333; }
-        .player-info { flex-grow: 1; }
-        .player-name { font-size: 18px; font-weight: 800; }
-        .player-title { font-size: 12px; color: #64748b; font-weight: 600; }
-        .text-gold { color: #f59e0b; }
-        .points { color: #64748b; }
+        .logo-icon i {
+            font-size: 20px;
+            color: #000;
+        }
 
-        .region-tag { padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 12px; }
-        .region-tag.na { background: #b91c1c; color: #fff; }
-        .region-tag.eu { background: #15803d; color: #fff; }
+        .logo-text {
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
 
-        /* Tier Badges (Original MCTiers look - No background box behind icons) */
-        .tier-badges { display: flex; gap: 12px; background: #080b10; padding: 8px 14px; border-radius: 10px; border: 1px solid #182030; }
-        .badge { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .badge img { width: 22px; height: 22px; object-fit: contain; }
-        .badge small { font-size: 10px; font-weight: 900; padding: 1px 4px; border-radius: 3px; }
-        .ht { color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
-        .lt { color: #3b82f6; background: rgba(59, 130, 246, 0.12); }
+        .logo-text .highlight {
+            color: var(--accent-gold);
+        }
 
-        /* Modal Overlay */
-        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: #121824; border: 1px solid #28334a; padding: 25px; border-radius: 15px; width: 400px; text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #8a99ad; }
-        .modal-tier-box { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 15px; background: #080b10; padding: 15px; border-radius: 10px; border: 1px solid #1a2333; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-fast);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .nav-item.active {
+            border-bottom: 2px solid var(--accent-gold);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box {
+            background: #141a26;
+            padding: 9px 16px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition-normal);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 12px var(--accent-gold-glow);
+        }
+
+        .search-box i {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 500;
+            width: 200px;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-sub);
+        }
+
+        /* ==========================================================================
+           3. CONTAINER & HERO SECTION
+           ========================================================================== */
+        .main-container {
+            max-width: 1280px;
+            margin: 30px auto;
+            padding: 0 24px;
+        }
+
+        .hero-banner {
+            background: linear-gradient(180deg, rgba(18, 24, 36, 0.6) 0%, rgba(15, 20, 29, 0.9) 100%), url('https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=1200') center/cover;
+            border-radius: 16px;
+            padding: 35px 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, #0f141d 30%, transparent 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #ffffff, #8a99ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .stat-box {
+            background: rgba(10, 14, 22, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent-gold);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* ==========================================================================
+           4. CATEGORY TABS & CONTROLS
+           ========================================================================== */
+        .category-tabs-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 0 12px 0;
+            scroll-behavior: smooth;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .tab-btn {
+            background: var(--bg-tab);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 11px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition-normal);
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-main);
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: var(--bg-tab-active);
+            color: var(--text-main);
+            border-color: var(--accent-gold);
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
+        }
+
+        .tab-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+        }
+
+        /* ==========================================================================
+           5. SERVER INFO & UTILITY BAR
+           ========================================================================== */
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .bar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-dropdown {
+            background: #141a26;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-btn {
+            background: #161e2c;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-fast);
+        }
+
+        .info-btn:hover {
+            background: #1e2a3e;
+        }
+
+        .server-ip-card {
+            background: #141c28;
+            border: 1px solid var(--border-color);
+            padding: 6px 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .server-ip-card:hover {
+            border-color: var(--accent-gold);
+            background: #1a2434;
+        }
+
+        .pvp-badge {
+            background: #dc2626;
+            color: white;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .ip-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ip-label {
+            font-size: 9px;
+            color: var(--text-sub);
+            font-weight: 800;
+        }
+
+        .ip-address {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ==========================================================================
+           6. LEADERBOARD & PLAYER CARDS
+           ========================================================================== */
+        .leaderboard {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .player-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-card:hover {
+            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+            border-color: var(--border-highlight);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Rank Highlights */
+        .rank-1 {
+            border-left: 5px solid #f59e0b;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-card) 100%);
+        }
+        .rank-2 {
+            border-left: 5px solid #94a3b8;
+            background: linear-gradient(90deg, rgba(148, 163, 184, 0.05) 0%, var(--bg-card) 100%);
+        }
+        .rank-3 {
+            border-left: 5px solid #b45309;
+            background: linear-gradient(90deg, rgba(180, 83, 9, 0.05) 0%, var(--bg-card) 100%);
+        }
+
+        .rank-tag {
+            font-size: 24px;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--text-muted);
+            width: 40px;
+            text-align: center;
+        }
+
+        .rank-1 .rank-tag { color: var(--accent-gold); }
+        .rank-2 .rank-tag { color: #cbd5e1; }
+        .rank-3 .rank-tag { color: #d97706; }
+
+        .player-avatar {
+            position: relative;
+        }
+
+        .player-avatar img {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            background: #141a26;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .player-info {
+            flex-grow: 1;
+        }
+
+        .player-name {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .points-count {
+            color: var(--text-sub);
+            font-weight: 700;
+        }
+
+        .region-tag {
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: 800;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        .region-tag.na { background: rgba(185, 28, 28, 0.2); color: #f87171; border: 1px solid rgba(185, 28, 28, 0.4); }
+        .region-tag.eu { background: rgba(21, 128, 61, 0.2); color: #4ade80; border: 1px solid rgba(21, 128, 61, 0.4); }
+        .region-tag.asia { background: rgba(180, 83, 9, 0.2); color: #fbbf24; border: 1px solid rgba(180, 83, 9, 0.4); }
+
+        /* Tier Badges (Visual Icons Container) */
+        .tier-badges {
+            display: flex;
+            gap: 12px;
+            background: #080b10;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid #161e2c;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition-fast);
+        }
+
+        .badge:hover {
+            transform: scale(1.15);
+        }
+
+        .badge img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .badge small {
+            font-size: 9px;
+            font-weight: 900;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .ht { color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); }
+        .lt { color: var(--accent-blue); background: rgba(59, 130, 246, 0.15); }
+
+        /* ==========================================================================
+           7. MODAL / PLAYER PROFILE OVERLAY
+           ========================================================================== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(4, 6, 10, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-highlight);
+            padding: 30px;
+            border-radius: 20px;
+            width: 440px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            animation: slideUp 0.25s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-main);
+        }
+
+        .modal-avatar-wrapper {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px auto;
+        }
+
+        .modal-avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            border: 2px solid var(--accent-gold);
+            box-shadow: 0 0 20px var(--accent-gold-glow);
+        }
+
+        .modal-player-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .modal-player-rank {
+            color: var(--accent-gold);
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .modal-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .modal-stat-card {
+            background: #090d14;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-stat-card .val {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .modal-stat-card .lbl {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .modal-section-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-align: left;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .modal-tier-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            background: #080b10;
+            padding: 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* ==========================================================================
+           8. FOOTER SECTION
+           ========================================================================== */
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-sub);
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .navbar { padding: 16px 20px; }
+            .hero-banner { flex-direction: column; text-align: center; gap: 20px; }
+            .hero-banner::before { display: none; }
+            .hero-stats { justify-content: center; }
+            .player-card { flex-wrap: wrap; }
+            .tier-badges { width: 100%; justify-content: center; margin-top: 10px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Top Navbar -->
+    <!-- Audio Effects for UI Click -->
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+
+    <!-- Top Navigation Bar -->
     <header class="navbar">
-        <div class="logo">
-            <span class="logo-mc">SUDARSHAN</span> <span class="logo-tiers">TIERS</span>
+        <div class="logo-container" onclick="playClick()">
+            <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
+            <div class="logo-text">SUDARSHAN <span class="highlight">TIERS</span></div>
         </div>
+
         <nav class="nav-links">
-            <a href="#" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
-            <a href="#" class="nav-item active"><i class="fa-solid fa-trophy text-gold"></i> Rankings</a>
-            <a href="https://discord.gg/zJbyq9TJR" target="_blank" class="nav-item"><i class="fa-brands fa-discord"></i> Discord</a>
+            <a href="#" class="nav-item active" onclick="playClick()"><i class="fa-solid fa-trophy"></i> Rankings</a>
+            <a href="#" class="nav-item" onclick="playClick()"><i class="fa-solid fa-chart-line"></i> Statistics</a>
+            <a href="https://discord.gg/zJbyq9TJR" target="_blank" class="nav-item" onclick="playClick()"><i class="fa-brands fa-discord"></i> Discord</a>
         </nav>
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Search player IGN...">
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search player IGN...">
+            </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Main Content Body -->
     <main class="main-container">
 
-        <!-- Correct Category Tabs with your SVGs -->
-        <div class="category-tabs">
-            <button class="tab-btn active"><i class="fa-solid fa-trophy text-gold"></i> Overall</button>
-            <button class="tab-btn"><img src="crystal.svg" alt="Vanilla"> Vanilla</button>
-            <button class="tab-btn"><img src="uhc.svg" alt="UHC"> UHC</button>
-            <button class="tab-btn"><img src="pot.svg" alt="Pot"> Pot</button>
-            <button class="tab-btn"><img src="nethop.svg" alt="NethOP"> NethOP</button>
-            <button class="tab-btn"><img src="smp.svg" alt="SMP"> SMP</button>
-            <button class="tab-btn"><img src="sword.svg" alt="Sword"> Sword</button>
-            <button class="tab-btn"><img src="axe.svg" alt="Axe"> Axe</button>
-            <button class="tab-btn"><img src="mace.svg" alt="Mace"> Mace</button>
+        <!-- Hero Header Banner -->
+        <div class="hero-banner">
+            <div class="hero-content">
+                <h1 class="hero-title">Official Competitive Leaderboard</h1>
+                <p class="hero-subtitle">Track top tier Minecraft PvP players across various game modes including Crystal, Sword, SMP, Pot, and Mace combat.</p>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalPlayersCount">128</div>
+                    <div class="stat-label">Tracked Players</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">v2.4</div>
+                    <div class="stat-label">Season Tier</div>
+                </div>
+            </div>
         </div>
 
-        <!-- Info / Server IP Bar -->
+        <!-- Custom Mode Category Tabs -->
+        <div class="category-tabs-wrapper">
+            <div class="category-tabs" id="categoryTabs">
+                <button class="tab-btn active" data-mode="overall" onclick="switchCategory(this)"><i class="fa-solid fa-trophy" style="color: var(--accent-gold);"></i> Overall</button>
+                <button class="tab-btn" data-mode="crystal" onclick="switchCategory(this)"><img src="crystal.svg" alt="Vanilla"> Vanilla</button>
+                <button class="tab-btn" data-mode="uhc" onclick="switchCategory(this)"><img src="uhc.svg" alt="UHC"> UHC</button>
+                <button class="tab-btn" data-mode="pot" onclick="switchCategory(this)"><img src="pot.svg" alt="Pot"> Pot</button>
+                <button class="tab-btn" data-mode="nethop" onclick="switchCategory(this)"><img src="nethop.svg" alt="NethOP"> NethOP</button>
+                <button class="tab-btn" data-mode="smp" onclick="switchCategory(this)"><img src="smp.svg" alt="SMP"> SMP</button>
+                <button class="tab-btn" data-mode="sword" onclick="switchCategory(this)"><img src="sword.svg" alt="Sword"> Sword</button>
+                <button class="tab-btn" data-mode="axe" onclick="switchCategory(this)"><img src="axe.svg" alt="Axe"> Axe</button>
+                <button class="tab-btn" data-mode="mace" onclick="switchCategory(this)"><img src="mace.svg" alt="Mace"> Mace</button>
+            </div>
+        </div>
+
+        <!-- Server IP & Filter Options Bar -->
         <div class="info-bar">
-            <button class="info-btn"><i class="fa-solid fa-circle-info"></i> Information</button>
-            <div class="server-ip-card" onclick="copyIp()">
-                <span class="pvp-badge">SERVER</span>
-                <div class="ip-details">
-                    <span class="ip-label">SERVER IP (CLICK TO COPY)</span>
-                    <span class="ip-address" id="serverIp">play.nglord.fun <i class="fa-regular fa-copy"></i></span>
+            <div class="bar-left">
+                <select class="filter-dropdown" id="regionFilter" onchange="filterRegion()">
+                    <option value="all">All Regions</option>
+                    <option value="NA">North America (NA)</option>
+                    <option value="EU">Europe (EU)</option>
+                    <option value="ASIA">Asia (ASIA)</option>
+                </select>
+            </div>
+            <div class="bar-right">
+                <button class="info-btn" onclick="openInfoModal()"><i class="fa-solid fa-circle-info"></i> Tier Info</button>
+                <div class="server-ip-card" onclick="copyIp()">
+                    <span class="pvp-badge">SERVER</span>
+                    <div class="ip-details">
+                        <span class="ip-label">CLICK TO COPY IP</span>
+                        <span class="ip-address">play.nglord.fun <i class="fa-regular fa-copy"></i></span>
+                    </div>
                 </div>
             </div>
-            <a href="https://discord.gg/zJbyq9TJR" target="_blank" class="discord-btn"><i class="fa-brands fa-discord"></i></a>
         </div>
 
-        <!-- Player Table List -->
+        <!-- Leaderboard List -->
         <div class="leaderboard" id="leaderboard">
-            
-            <!-- Player 1 -->
-            <div class="player-card rank-1" onclick="openStats('Marlowww', 'Combat Grandmaster', '450', 'NA', 'https://mc-heads.net/avatar/Marlowww/100', 'p1')">
-                <div class="rank-tag">1.</div>
-                <div class="player-avatar">
-                    <img src="https://mc-heads.net/avatar/Marlowww/100" alt="Marlowww">
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">Marlowww</h3>
-                    <p class="player-title"><i class="fa-solid fa-gem text-gold"></i> Combat Grandmaster <span class="points">(450 points)</span></p>
-                </div>
-                <div class="region-tag na">NA</div>
-                <div class="tier-badges" id="p1-badges">
-                    <span class="badge"><img src="sword.svg" alt="Sword"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="smp.svg" alt="SMP"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="nethop.svg" alt="NethOP"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="mace.svg" alt="Mace"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="crystal.svg" alt="Vanilla"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="pot.svg" alt="Pot"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="uhc.svg" alt="UHC"><small class="lt">LT1</small></span>
-                    <span class="badge"><img src="axe.svg" alt="Axe"><small class="lt">LT1</small></span>
-                </div>
-            </div>
-
-            <!-- Player 2 -->
-            <div class="player-card" onclick="openStats('ItzRealMe', 'Combat Master', '330', 'NA', 'https://mc-heads.net/avatar/ItzRealMe/100', 'p2')">
-                <div class="rank-tag">2.</div>
-                <div class="player-avatar">
-                    <img src="https://mc-heads.net/avatar/ItzRealMe/100" alt="ItzRealMe">
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">ItzRealMe</h3>
-                    <p class="player-title"><i class="fa-solid fa-gem text-gold"></i> Combat Master <span class="points">(330 points)</span></p>
-                </div>
-                <div class="region-tag na">NA</div>
-                <div class="tier-badges" id="p2-badges">
-                    <span class="badge"><img src="sword.svg" alt="Sword"><small class="ht">HT3</small></span>
-                    <span class="badge"><img src="nethop.svg" alt="NethOP"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="crystal.svg" alt="Vanilla"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="pot.svg" alt="Pot"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="axe.svg" alt="Axe"><small class="lt">LT2</small></span>
-                </div>
-            </div>
-
-            <!-- Player 3 -->
-            <div class="player-card" onclick="openStats('coldified', 'Combat Master', '326', 'EU', 'https://mc-heads.net/avatar/coldified/100', 'p3')">
-                <div class="rank-tag">3.</div>
-                <div class="player-avatar">
-                    <img src="https://mc-heads.net/avatar/coldified/100" alt="coldified">
-                </div>
-                <div class="player-info">
-                    <h3 class="player-name">coldified</h3>
-                    <p class="player-title"><i class="fa-solid fa-gem text-gold"></i> Combat Master <span class="points">(326 points)</span></p>
-                </div>
-                <div class="region-tag eu">EU</div>
-                <div class="tier-badges" id="p3-badges">
-                    <span class="badge"><img src="pot.svg" alt="Pot"><small class="lt">LT1</small></span>
-                    <span class="badge"><img src="crystal.svg" alt="Vanilla"><small class="lt">LT3</small></span>
-                    <span class="badge"><img src="uhc.svg" alt="UHC"><small class="ht">HT1</small></span>
-                    <span class="badge"><img src="axe.svg" alt="Axe"><small class="lt">LT1</small></span>
-                </div>
-            </div>
-
+            <!-- Dynamic Player Cards injected via Javascript -->
         </div>
+
     </main>
 
     <!-- Player Stats Modal -->
     <div class="modal-overlay" id="playerModal">
         <div class="modal">
-            <span class="close-btn" onclick="closeStats()">&times;</span>
-            <img id="modalImg" src="" style="width:80px; height:80px; border-radius:12px; margin-bottom:10px;">
-            <h2 id="modalName">Name</h2>
-            <p id="modalRank" style="color:#f59e0b; margin-top:5px; font-weight: bold;"></p>
-            <p id="modalPoints" style="color:#8a99ad; margin:5px 0; font-size:14px;"></p>
-            <p id="modalRegion" style="font-weight:bold; font-size:13px; color:#10b981;"></p>
-            
-            <h4 style="margin-top:15px; text-align:left; font-size:13px; color:#8a99ad;">PLAYER TIERS:</h4>
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div class="modal-avatar-wrapper">
+                <img id="modalImg" src="" alt="Player Avatar">
+            </div>
+            <h2 class="modal-player-name" id="modalName">Player Name</h2>
+            <div class="modal-player-rank" id="modalRank">Combat Master</div>
+
+            <div class="modal-stats-grid">
+                <div class="modal-stat-card">
+                    <div class="val" id="modalPoints">0</div>
+                    <div class="lbl">Tier Points</div>
+                </div>
+                <div class="modal-stat-card">
+                    <div class="val" id="modalRegion">NA</div>
+                    <div class="lbl">Region</div>
+                </div>
+            </div>
+
+            <div class="modal-section-title">Current Mode Tier Badges</div>
             <div class="modal-tier-box" id="modalTiers">
-                <!-- Tiers inject dynamically -->
+                <!-- Badges populated here -->
             </div>
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 SUDARSHAN MCTIERS. Not affiliated with Mojang Studios.</p>
+        <p style="margin-top: 5px;">Designed for competitive Minecraft communities.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
     <script>
-        function copyIp() {
-            navigator.clipboard.writeText("play.nglord.fun");
-            alert("Copied Server IP: play.nglord.fun");
+        // Player Database Object
+        const playersData = [
+            {
+                rank: 1,
+                name: "Marlowww",
+                title: "Combat Grandmaster",
+                points: 450,
+                region: "NA",
+                skin: "https://mc-heads.net/avatar/Marlowww/100",
+                tiers: [
+                    { icon: "sword.svg", level: "HT1", type: "ht" },
+                    { icon: "smp.svg", level: "HT1", type: "ht" },
+                    { icon: "nethop.svg", level: "HT1", type: "ht" },
+                    { icon: "mace.svg", level: "HT1", type: "ht" },
+                    { icon: "crystal.svg", level: "HT1", type: "ht" },
+                    { icon: "pot.svg", level: "HT1", type: "ht" },
+                    { icon: "uhc.svg", level: "LT1", type: "lt" },
+                    { icon: "axe.svg", level: "LT1", type: "lt" }
+                ]
+            },
+            {
+                rank: 2,
+                name: "ItzRealMe",
+                title: "Combat Master",
+                points: 330,
+                region: "NA",
+                skin: "https://mc-heads.net/avatar/ItzRealMe/100",
+                tiers: [
+                    { icon: "sword.svg", level: "HT3", type: "ht" },
+                    { icon: "nethop.svg", level: "HT1", type: "ht" },
+                    { icon: "crystal.svg", level: "HT1", type: "ht" },
+                    { icon: "pot.svg", level: "HT1", type: "ht" },
+                    { icon: "axe.svg", level: "LT2", type: "lt" }
+                ]
+            },
+            {
+                rank: 3,
+                name: "coldified",
+                title: "Combat Master",
+                points: 326,
+                region: "EU",
+                skin: "https://mc-heads.net/avatar/coldified/100",
+                tiers: [
+                    { icon: "pot.svg", level: "LT1", type: "lt" },
+                    { icon: "crystal.svg", level: "LT3", type: "lt" },
+                    { icon: "uhc.svg", level: "HT1", type: "ht" },
+                    { icon: "axe.svg", level: "LT1", type: "lt" }
+                ]
+            },
+            {
+                rank: 4,
+                name: "Swight",
+                title: "Combat Expert",
+                points: 290,
+                region: "NA",
+                skin: "https://mc-heads.net/avatar/Swight/100",
+                tiers: [
+                    { icon: "smp.svg", level: "HT2", type: "ht" },
+                    { icon: "mace.svg", level: "LT1", type: "lt" },
+                    { icon: "sword.svg", level: "HT1", type: "ht" }
+                ]
+            },
+            {
+                rank: 5,
+                name: "SudarshanPvP",
+                title: "Combat Expert",
+                points: 275,
+                region: "ASIA",
+                skin: "https://mc-heads.net/avatar/Steve/100",
+                tiers: [
+                    { icon: "crystal.svg", level: "HT1", type: "ht" },
+                    { icon: "sword.svg", level: "HT2", type: "ht" },
+                    { icon: "pot.svg", level: "LT1", type: "lt" }
+                ]
+            }
+        ];
+
+        // Sound Player
+        function playClick() {
+            const sound = document.getElementById("clickSound");
+            sound.currentTime = 0;
+            sound.play().catch(()=>{});
         }
 
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            let value = this.value.toLowerCase();
-            let cards = document.querySelectorAll('.player-card');
+        // Render Players Leaderboard
+        function renderLeaderboard(data) {
+            const container = document.getElementById("leaderboard");
+            container.innerHTML = "";
 
-            cards.forEach(card => {
-                let name = card.querySelector('.player-name').innerText.toLowerCase();
-                if(name.includes(value)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+            if (data.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted);">No players found matching your criteria.</div>`;
+                return;
+            }
+
+            data.forEach(player => {
+                let rankClass = "";
+                if (player.rank === 1) rankClass = "rank-1";
+                else if (player.rank === 2) rankClass = "rank-2";
+                else if (player.rank === 3) rankClass = "rank-3";
+
+                let regionClass = player.region.toLowerCase();
+
+                let badgesHTML = player.tiers.map(t => `
+                    <span class="badge">
+                        <img src="${t.icon}" alt="Tier Icon">
+                        <small class="${t.type}">${t.level}</small>
+                    </span>
+                `).join('');
+
+                let cardHTML = `
+                    <div class="player-card ${rankClass}" onclick="openProfile('${player.name}')">
+                        <div class="rank-tag">${player.rank}.</div>
+                        <div class="player-avatar">
+                            <img src="${player.skin}" alt="${player.name}">
+                        </div>
+                        <div class="player-info">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-title">
+                                <i class="fa-solid fa-gem text-gold" style="color: var(--accent-gold);"></i> 
+                                ${player.title} <span class="points-count">(${player.points} pts)</span>
+                            </div>
+                        </div>
+                        <div class="region-tag ${regionClass}">${player.region}</div>
+                        <div class="tier-badges">
+                            ${badgesHTML}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
             });
+
+            document.getElementById("totalPlayersCount").innerText = playersData.length;
+        }
+
+        // Filter Logic
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            let val = e.target.value.toLowerCase();
+            let filtered = playersData.filter(p => p.name.toLowerCase().includes(val));
+            renderLeaderboard(filtered);
         });
 
-        function openStats(name, title, points, region, img, badgeId) {
-            document.getElementById('modalName').innerText = name;
-            document.getElementById('modalRank').innerText = title;
-            document.getElementById('modalPoints').innerText = points + " Tier Points";
-            document.getElementById('modalRegion').innerText = "Region: " + region;
-            document.getElementById('modalImg').src = img;
-
-            let badgesHtml = document.getElementById(badgeId + '-badges').innerHTML;
-            document.getElementById('modalTiers').innerHTML = badgesHtml;
-
-            document.getElementById('playerModal').style.display = 'flex';
+        function filterRegion() {
+            playClick();
+            let reg = document.getElementById("regionFilter").value;
+            if (reg === "all") {
+                renderLeaderboard(playersData);
+            } else {
+                let filtered = playersData.filter(p => p.region === reg);
+                renderLeaderboard(filtered);
+            }
         }
 
-        function closeStats() {
-            document.getElementById('playerModal').style.display = 'none';
+        function switchCategory(btn) {
+            playClick();
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
         }
+
+        // Profile Modal Logic
+        function openProfile(playerName) {
+            playClick();
+            let player = playersData.find(p => p.name === playerName);
+            if (!player) return;
+
+            document.getElementById("modalName").innerText = player.name;
+            document.getElementById("modalRank").innerText = player.title;
+            document.getElementById("modalPoints").innerText = player.points;
+            document.getElementById("modalRegion").innerText = player.region;
+            document.getElementById("modalImg").src = player.skin;
+
+            let badgesHTML = player.tiers.map(t => `
+                <span class="badge" style="transform: scale(1.2);">
+                    <img src="${t.icon}" alt="Icon">
+                    <small class="${t.type}">${t.level}</small>
+                </span>
+            `).join('');
+
+            document.getElementById("modalTiers").innerHTML = badgesHTML;
+            document.getElementById("playerModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            playClick();
+            document.getElementById("playerModal").style.display = "none";
+        }
+
+        function copyIp() {
+            playClick();
+            navigator.clipboard.writeText("play.nglord.fun");
+            alert("Copied IP: play.nglord.fun");
+        }
+
+        // Initialize App
+        window.onload = () => {
+            renderLeaderboard(playersData);
+        };
     </script>
 </body>
 </html>
