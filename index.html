@@ -4,26 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUDARSHAN MCTIERS - Rankings</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0b0e14; color: #ffffff; padding-bottom: 50px; }
+
+        /* Navbar */
+        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 30px; background-color: #121721; border-bottom: 1px solid #1e2638; }
+        .logo { font-weight: 900; font-size: 24px; letter-spacing: 1px; }
+        .logo-mc { color: #f59e0b; }
+        .logo-tiers { color: #ffffff; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-item { color: #8a99ad; text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .nav-item:hover, .nav-item.active { color: #ffffff; }
+
+        .search-box { background: #1a2232; padding: 8px 14px; border-radius: 8px; display: flex; align-items: center; gap: 10px; border: 1px solid #28334a; color: #8a99ad; }
+        .search-box input { background: transparent; border: none; outline: none; color: white; width: 180px; }
+
+        /* Main Container */
+        .main-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+
+        /* Category Tabs */
+        .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 15px; }
+        .tab-btn { background: #141b27; border: 1px solid #222d42; color: #8a99ad; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap; }
+        .tab-btn:hover, .tab-btn.active { background: #1e283d; color: #ffffff; border-color: #f59e0b; }
+
+        /* Info Bar */
+        .info-bar { display: flex; justify-content: flex-end; align-items: center; gap: 15px; margin: 20px 0; }
+        .info-btn { background: #172131; border: 1px solid #28364d; color: #fff; padding: 8px 14px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .server-ip-card { background: #141c28; border: 1px solid #222d40; padding: 6px 12px; border-radius: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .pvp-badge { background: #dc2626; font-size: 10px; font-weight: 900; padding: 3px 6px; border-radius: 4px; }
+        .ip-label { display: block; font-size: 9px; color: #64748b; font-weight: 800; }
+        .ip-address { font-size: 12px; font-weight: 700; color: #f59e0b; }
+        .discord-btn { color: #5865F2; font-size: 20px; text-decoration: none; display: flex; align-items: center; margin-left: 5px;}
+
+        /* Player List */
+        .leaderboard { display: flex; flex-direction: column; gap: 12px; }
+        .player-card { background: #121824; border: 1px solid #1f2a3e; border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: transform 0.2s; }
+        .player-card:hover { transform: translateY(-2px); border-color: #f59e0b; }
+        .rank-1 { border-left: 4px solid #f59e0b; }
+        .rank-tag { font-size: 28px; font-weight: 900; font-style: italic; color: #ffffff; width: 35px; }
+        .player-avatar img { width: 50px; height: 50px; border-radius: 8px; background: #1a2333; }
+        .player-info { flex-grow: 1; }
+        .player-name { font-size: 18px; font-weight: 800; }
+        .player-title { font-size: 12px; color: #64748b; font-weight: 600; }
+        .text-gold { color: #f59e0b; }
+        .points { color: #475569; }
+
+        .region-tag { padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 12px; }
+        .region-tag.na { background: #b91c1c; color: #fff; }
+        .region-tag.eu { background: #15803d; color: #fff; }
+
+        .tier-badges { display: flex; gap: 8px; background: #0d121b; padding: 8px 12px; border-radius: 10px; }
+        .badge { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+        .badge i { font-size: 16px; color: #8a99ad; }
+        .badge small { font-size: 9px; font-weight: 800; }
+        .ht { color: #f59e0b; }
+        .lt { color: #3b82f6; }
+
+        /* Modal Overlay */
+        .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.8); justify-content: center; align-items: center; z-index: 1000; }
+        .modal { background: #121824; border: 1px solid #1f2a3e; padding: 25px; border-radius: 15px; width: 350px; text-align: center; position: relative; }
+        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 20px; cursor: pointer; color: #8a99ad; }
+    </style>
 </head>
 <body>
 
     <!-- Top Navbar -->
     <header class="navbar">
         <div class="logo">
-            <span class="logo-mc">MC</span><span class="logo-tiers">TIERS</span>
+            <span class="logo-mc">SUDARSHAN</span> <span class="logo-tiers">TIERS</span>
         </div>
         <nav class="nav-links">
             <a href="#" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
             <a href="#" class="nav-item active"><i class="fa-solid fa-trophy"></i> Rankings</a>
-            <a href="#" class="nav-item"><i class="fa-brands fa-discord"></i> Discords <i class="fa-solid fa-chevron-down dropdown-icon"></i></a>
-            <a href="#" class="nav-item"><i class="fa-solid fa-code"></i> API Docs</a>
+            <a href="https://discord.gg/zJbyq9TJR" target="_blank" class="nav-item"><i class="fa-brands fa-discord"></i> Discord</a>
         </nav>
         <div class="search-box">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search player...">
-            <span class="search-shortcut">/</span>
+            <input type="text" id="searchInput" placeholder="Search player IGN...">
         </div>
     </header>
 
@@ -32,56 +91,35 @@
 
         <!-- Category Tabs -->
         <div class="category-tabs">
-            <button class="tab-btn active">
-                <img src="assets/trophy.png" alt=""> Overall
-            </button>
-            <button class="tab-btn">
-                <i class="fa-solid fa-swords"></i> LTMs
-            </button>
-            <button class="tab-btn">
-                <img src="assets/vanilla.png" alt=""> Vanilla
-            </button>
-            <button class="tab-btn">
-                <img src="assets/UHC.png" alt=""> UHC
-            </button>
-            <button class="tab-btn">
-                <img src="assets/pot.png" alt=""> Pot
-            </button>
-            <button class="tab-btn">
-                <img src="assets/nethop.png" alt=""> NethOP
-            </button>
-            <button class="tab-btn">
-                <img src="assets/SMP.png" alt=""> SMP
-            </button>
-            <button class="tab-btn">
-                <img src="assets/sword.png" alt=""> Sword
-            </button>
-            <button class="tab-btn">
-                <img src="assets/axe.png" alt=""> Axe
-            </button>
-            <button class="tab-btn">
-                <img src="assets/mace.png" alt=""> Mace
-            </button>
+            <button class="tab-btn active"><i class="fa-solid fa-trophy text-gold"></i> Overall</button>
+            <button class="tab-btn"><i class="fa-solid fa-fire"></i> LTMs</button>
+            <button class="tab-btn"><i class="fa-solid fa-cube"></i> Vanilla</button>
+            <button class="tab-btn"><i class="fa-solid fa-heart"></i> UHC</button>
+            <button class="tab-btn"><i class="fa-solid fa-flask"></i> Pot</button>
+            <button class="tab-btn"><i class="fa-solid fa-shield"></i> NethOP</button>
+            <button class="tab-btn"><i class="fa-solid fa-tree"></i> SMP</button>
+            <button class="tab-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> Sword</button>
+            <button class="tab-btn"><i class="fa-solid fa-gavel"></i> Axe</button>
         </div>
 
         <!-- Info / Server IP Bar -->
         <div class="info-bar">
             <button class="info-btn"><i class="fa-solid fa-circle-info"></i> Information</button>
-            <div class="server-ip-card">
-                <span class="pvp-badge">PVP CLUB</span>
+            <div class="server-ip-card" onclick="copyIp()">
+                <span class="pvp-badge">SERVER</span>
                 <div class="ip-details">
-                    <span class="ip-label">SERVER IP</span>
-                    <span class="ip-address">mcpvp.club <i class="fa-regular fa-copy"></i></span>
+                    <span class="ip-label">SERVER IP (CLICK TO COPY)</span>
+                    <span class="ip-address" id="serverIp">play.nglord.fun <i class="fa-regular fa-copy"></i></span>
                 </div>
-                <i class="fa-brands fa-discord discord-badge"></i>
             </div>
+            <a href="https://discord.gg/zJbyq9TJR" target="_blank" class="discord-btn"><i class="fa-brands fa-discord"></i></a>
         </div>
 
         <!-- Player Table List -->
-        <div class="leaderboard">
+        <div class="leaderboard" id="leaderboard">
             
             <!-- Player 1 -->
-            <div class="player-card rank-1">
+            <div class="player-card rank-1" onclick="openStats('Marlowww', 'Combat Grandmaster', '450', 'NA', 'https://mc-heads.net/avatar/Marlowww/100')">
                 <div class="rank-tag">1.</div>
                 <div class="player-avatar">
                     <img src="https://mc-heads.net/avatar/Marlowww/100" alt="Marlowww">
@@ -92,19 +130,17 @@
                 </div>
                 <div class="region-tag na">NA</div>
                 <div class="tier-badges">
-                    <span class="badge"><img src="assets/vanilla.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/pot.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/SMP.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/sword.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/nethop.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/mace.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/axe.png"> <small class="lt">LT1</small></span>
-                    <span class="badge"><img src="assets/UHC.png"> <small class="lt">LT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-cube"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-flask"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-tree"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-shield"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-gavel"></i><small class="lt">LT1</small></span>
                 </div>
             </div>
 
             <!-- Player 2 -->
-            <div class="player-card">
+            <div class="player-card" onclick="openStats('ItzRealMe', 'Combat Master', '330', 'NA', 'https://mc-heads.net/avatar/ItzRealMe/100')">
                 <div class="rank-tag">2.</div>
                 <div class="player-avatar">
                     <img src="https://mc-heads.net/avatar/ItzRealMe/100" alt="ItzRealMe">
@@ -115,19 +151,16 @@
                 </div>
                 <div class="region-tag na">NA</div>
                 <div class="tier-badges">
-                    <span class="badge"><img src="assets/sword.png"> <small class="ht">HT3</small></span>
-                    <span class="badge"><img src="assets/nethop.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/vanilla.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/pot.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/SMP.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/axe.png"> <small class="lt">LT2</small></span>
-                    <span class="badge"><img src="assets/UHC.png"> <small class="lt">LT2</small></span>
-                    <span class="badge"><img src="assets/mace.png"> <small class="lt">LT2</small></span>
+                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles"></i><small class="ht">HT3</small></span>
+                    <span class="badge"><i class="fa-solid fa-shield"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-cube"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-flask"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-gavel"></i><small class="lt">LT2</small></span>
                 </div>
             </div>
 
             <!-- Player 3 -->
-            <div class="player-card">
+            <div class="player-card" onclick="openStats('coldified', 'Combat Master', '326', 'EU', 'https://mc-heads.net/avatar/coldified/100')">
                 <div class="rank-tag">3.</div>
                 <div class="player-avatar">
                     <img src="https://mc-heads.net/avatar/coldified/100" alt="coldified">
@@ -138,20 +171,63 @@
                 </div>
                 <div class="region-tag eu">EU</div>
                 <div class="tier-badges">
-                    <span class="badge"><img src="assets/pot.png"> <small class="lt">LT1</small></span>
-                    <span class="badge"><img src="assets/vanilla.png"> <small class="ht">LT3</small></span>
-                    <span class="badge"><img src="assets/UHC.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/SMP.png"> <small class="ht">HT1</small></span>
-                    <span class="badge"><img src="assets/sword.png"> <small class="lt">LT1</small></span>
-                    <span class="badge"><img src="assets/axe.png"> <small class="lt">LT1</small></span>
-                    <span class="badge"><img src="assets/mace.png"> <small class="lt">LT1</small></span>
-                    <span class="badge"><img src="assets/nethop.png"> <small class="lt">LT2</small></span>
+                    <span class="badge"><i class="fa-solid fa-flask"></i><small class="lt">LT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-cube"></i><small class="ht">LT3</small></span>
+                    <span class="badge"><i class="fa-solid fa-heart"></i><small class="ht">HT1</small></span>
+                    <span class="badge"><i class="fa-solid fa-gavel"></i><small class="lt">LT1</small></span>
                 </div>
             </div>
 
         </div>
-
     </main>
 
+    <!-- Player Stats Modal -->
+    <div class="modal-overlay" id="playerModal">
+        <div class="modal">
+            <span class="close-btn" onclick="closeStats()">&times;</span>
+            <img id="modalImg" src="" style="width:80px; height:80px; border-radius:10px; margin-bottom:10px;">
+            <h2 id="modalName">Name</h2>
+            <p id="modalRank" style="color:#f59e0b; margin-top:5px;"></p>
+            <p id="modalPoints" style="color:#8a99ad; margin:10px 0;"></p>
+            <p id="modalRegion" style="font-weight:bold;"></p>
+        </div>
+    </div>
+
+    <script>
+        // Copy IP
+        function copyIp() {
+            navigator.clipboard.writeText("play.nglord.fun");
+            alert("Copied Server IP: play.nglord.fun");
+        }
+
+        // Live Search Filter
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let value = this.value.toLowerCase();
+            let cards = document.querySelectorAll('.player-card');
+
+            cards.forEach(card => {
+                let name = card.querySelector('.player-name').innerText.toLowerCase();
+                if(name.includes(value)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // Player Stats Modal
+        function openStats(name, title, points, region, img) {
+            document.getElementById('modalName').innerText = name;
+            document.getElementById('modalRank').innerText = title;
+            document.getElementById('modalPoints').innerText = points + " Tier Points";
+            document.getElementById('modalRegion').innerText = "Region: " + region;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('playerModal').style.display = 'flex';
+        }
+
+        function closeStats() {
+            document.getElementById('playerModal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
