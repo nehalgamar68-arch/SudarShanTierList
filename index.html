@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUDARSHAN MCTIERS - Official Leaderboard</title>
+    
+    <!-- FontAwesome & Google Fonts -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
@@ -28,6 +30,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); user-select: none; }
         body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
         
+        /* Navigation Bar */
         .navbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(15, 20, 29, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
         .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px var(--accent-gold-glow); }
@@ -38,20 +41,24 @@
         .search-box { background: #141a26; padding: 9px 16px; border-radius: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color); }
         .search-box input { background: transparent; border: none; outline: none; color: var(--text-main); font-size: 14px; width: 200px; }
 
+        /* Main Container */
         .main-container { max-width: 1280px; margin: 30px auto; padding: 0 24px; }
         .hero-banner { background: linear-gradient(180deg, rgba(18, 24, 36, 0.8) 0%, rgba(15, 20, 29, 0.95) 100%), url('https://images.unsplash.com/photo-1627856013091-fed6e4e30025?q=80&w=1200') center/cover; border-radius: 16px; padding: 35px 40px; margin-bottom: 30px; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
         
+        /* Category Navigation Bar */
         .category-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 25px; }
         .tab-btn { background: var(--bg-tab); border: 1px solid var(--border-color); color: var(--text-muted); padding: 10px 18px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
         .tab-btn.active { background: var(--bg-tab-active); color: var(--text-main); border-color: var(--accent-gold); }
-        .tab-btn svg { width: 20px; height: 20px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .tab-btn img { width: 20px; height: 20px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
 
         .info-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--bg-card); padding: 12px 20px; border-radius: 12px; border: 1px solid var(--border-color); }
         .filter-dropdown { background: #141a26; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 12px; border-radius: 8px; font-weight: 600; }
         .server-ip-card { background: #141c28; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
 
+        /* Leaderboard Cards & Items */
         .leaderboard { display: flex; flex-direction: column; gap: 12px; }
-        .player-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 22px; display: flex; align-items: center; gap: 20px; cursor: pointer; }
+        .player-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 22px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.2s; }
+        .player-card:hover { background: var(--bg-card-hover); border-color: var(--border-highlight); }
         .rank-1 { border-left: 5px solid #f59e0b; background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-card) 100%); }
         .rank-tag { font-size: 24px; font-weight: 900; color: var(--text-muted); width: 35px; text-align: center; }
         .rank-1 .rank-tag { color: var(--accent-gold); }
@@ -60,13 +67,15 @@
         .player-name { font-size: 18px; font-weight: 800; }
         .region-tag { padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 11px; background: rgba(185, 28, 28, 0.2); color: #f87171; }
 
-        .tier-badges { display: flex; gap: 10px; background: #080b10; padding: 8px 14px; border-radius: 10px; border: 1px solid #161e2c; }
+        /* Badges & Icons CSS Fixes */
+        .tier-badges { display: flex; gap: 14px; background: #080b10; padding: 8px 16px; border-radius: 10px; border: 1px solid #161e2c; align-items: center; }
         .badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .badge svg { width: 22px; height: 22px; }
-        .badge small { font-size: 9px; font-weight: 900; padding: 1px 4px; border-radius: 3px; }
+        .badge img { width: 28px !important; height: 28px !important; object-fit: contain; display: block; image-rendering: pixelated; }
+        .badge small { font-size: 10px; font-weight: 900; padding: 2px 5px; border-radius: 4px; }
         .ht { color: var(--accent-gold); background: rgba(245, 158, 11, 0.15); }
         .lt { color: var(--accent-blue); background: rgba(59, 130, 246, 0.15); }
 
+        /* Profile Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(4, 6, 10, 0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 1000; }
         .modal { background: var(--bg-card); border: 1px solid var(--border-highlight); padding: 25px; border-radius: 20px; width: 400px; text-align: center; position: relative; }
         .close-btn { position: absolute; top: 14px; right: 16px; font-size: 20px; cursor: pointer; color: var(--text-muted); }
@@ -112,7 +121,7 @@
                 <option value="EU">Europe (EU)</option>
                 <option value="ASIA">Asia (ASIA)</option>
             </select>
-            <div class="server-ip-card" onclick="navigator.clipboard.writeText('play.nglord.fun'); alert('Copied IP!');">
+            <div class="server-ip-card" onclick="navigator.clipboard.writeText('play.nglord.fun'); alert('Copied Server IP!');">
                 <span style="background: #dc2626; color: white; font-size: 10px; font-weight: 900; padding: 3px 6px; border-radius: 4px;">SERVER</span>
                 <div>
                     <span style="font-size: 9px; color: var(--text-sub); font-weight: 800; display: block;">CLICK TO COPY IP</span>
@@ -134,43 +143,26 @@
             <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:15px; background:#080b10; padding:15px; border-radius:10px;" id="modalTiers"></div>
         </div>
     </div>
-<!-- ================= PART 1 KA CODE ================= -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>SUDARSHAN MCTIERS</title>
-    <style>
-        /* Part 1 ki CSS yahan aayegi */
-    </style>
-</head>
-<body>
-    <!-- Part 1 ka HTML Header, Main Content, Modal yahan aayega -->
 
-
-<!-- ================= PART 2 KA CODE (Dono ko yahan jodna hai) ================= -->
     <script>
-        // Part 2 ke saare SVGs aur JavaScript logic yahan aayenge
-    </script>
-</body>
-</html>
-<script>
-        // High quality pixel-art SVGs embedded directly
-        const SVGS = {
-            crystal: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5z" fill="#ec4899"/><path d="M12 4l6 4v8l-6 3-6-3V8l6-4z" fill="#f472b6"/></svg>`,
-            sword: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 18l-2 2 1 1 2-2 11-11-1-1L6 18z" fill="#38bdf8"/><path d="M19 4l1 1-2 2-1-1 2-2z" fill="#0284c7"/></svg>`,
-            uhc: `<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="8" fill="#f59e0b"/><path d="M12 5c-2 0-3-2-3-3h2c1 1 2 1 4 0h1c0 2-2 3-4 3z" fill="#10b981"/></svg>`,
-            pot: `<svg viewBox="0 0 24 24" fill="none"><path d="M10 4h4v3l5 9v3H5v-3l5-9V4z" fill="#60a5fa"/><path d="M8 16h8v2H8v-2z" fill="#2563eb"/></svg>`,
-            nethop: `<svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v6c0 6-7 10-7 10S5 16 5 10V4z" fill="#ef4444"/></svg>`,
-            smp: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 2l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1 3-6z" fill="#10b981"/></svg>`,
-            axe: `<svg viewBox="0 0 24 24" fill="none"><path d="M14 4l6 6-4 4-2-2 1-3-3 1-2-2 4-4z" fill="#c084fc"/><path d="M5 19l8-8 2 2-8 8H5v-2z" fill="#7e22ce"/></svg>`,
-            mace: `<svg viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="6" rx="1" fill="#fb923c"/><path d="M6 18l6-6 2 2-6 6H6v-2z" fill="#ea580c"/></svg>`
+        // Real Minecraft High-Res Icons
+        const ITEM_ICONS = {
+            crystal: "https://mctiers.com/assets/modes/crystal.png",
+            sword: "https://mctiers.com/assets/modes/sword.png",
+            uhc: "https://mctiers.com/assets/modes/uhc.png",
+            pot: "https://mctiers.com/assets/modes/pot.png",
+            nethop: "https://mctiers.com/assets/modes/nethop.png",
+            smp: "https://mctiers.com/assets/modes/smp.png",
+            axe: "https://mctiers.com/assets/modes/axe.png",
+            mace: "https://mctiers.com/assets/modes/mace.png"
         };
 
-        // Render SVGs in Header Tabs
-        Object.keys(SVGS).forEach(key => {
+        // Inject icons into category tabs
+        Object.keys(ITEM_ICONS).forEach(key => {
             const btn = document.getElementById(`tab-${key}`);
-            if (btn) btn.innerHTML = SVGS[key] + " " + btn.innerText;
+            if (btn) {
+                btn.innerHTML = `<img src="${ITEM_ICONS[key]}" alt="${key}"> ` + btn.innerText;
+            }
         });
 
         const playersData = [
@@ -211,7 +203,7 @@
 
                 let badgesHTML = displayTiers.map(t => `
                     <span class="badge">
-                        ${SVGS[t.mode] || ''}
+                        <img src="${ITEM_ICONS[t.mode]}" alt="${t.mode}">
                         <small class="${t.type}">${t.level}</small>
                     </span>
                 `).join('');
@@ -258,7 +250,7 @@
 
             document.getElementById("modalTiers").innerHTML = p.tiers.map(t => `
                 <span class="badge" style="transform: scale(1.2);">
-                    ${SVGS[t.mode] || ''}
+                    <img src="${ITEM_ICONS[t.mode]}" alt="${t.mode}">
                     <small class="${t.type}">${t.level}</small>
                 </span>
             `).join('');
