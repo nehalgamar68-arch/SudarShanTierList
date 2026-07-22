@@ -26,7 +26,7 @@
 
         /* Category Tabs */
         .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 15px; }
-        .tab-btn { background: #141b27; border: 1px solid #222d42; color: #8a99ad; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap; }
+        .tab-btn { background: #141b27; border: 1px solid #222d42; color: #8a99ad; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap; }
         .tab-btn:hover, .tab-btn.active { background: #1e283d; color: #ffffff; border-color: #f59e0b; }
 
         /* Info Bar */
@@ -43,7 +43,6 @@
         .player-card { background: #121824; border: 1px solid #1f2a3e; border-radius: 12px; padding: 14px 20px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: transform 0.2s; }
         .player-card:hover { transform: translateY(-2px); border-color: #f59e0b; }
         
-        /* Gold Position 1 Glow */
         .rank-1 { border-left: 5px solid #f59e0b; box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.15); }
         .rank-tag { font-size: 28px; font-weight: 900; font-style: italic; color: #ffffff; width: 35px; }
         .rank-1 .rank-tag { color: #f59e0b; }
@@ -59,30 +58,71 @@
         .region-tag.na { background: #b91c1c; color: #fff; }
         .region-tag.eu { background: #15803d; color: #fff; }
 
-        /* Icon Colors Fix */
-        .c-vanilla { color: #d97706; }
-        .c-pot { color: #ec4899; }
-        .c-smp { color: #10b981; }
-        .c-sword { color: #3b82f6; }
-        .c-nethop { color: #8b5cf6; }
-        .c-axe { color: #f97316; }
-        .c-uhc { color: #ef4444; }
+        /* Black Container for Icons */
+        .icon-box {
+            width: 28px;
+            height: 28px;
+            background-color: #06080d;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #1a2232;
+        }
+        .icon-box svg { width: 18px; height: 18px; }
 
-        .tier-badges { display: flex; gap: 8px; background: #0d121b; padding: 8px 12px; border-radius: 10px; }
-        .badge { display: flex; flex-direction: column; align-items: center; gap: 3px; }
-        .badge i { font-size: 16px; }
+        /* Tier Badges with Black Icon Box */
+        .tier-badges { display: flex; gap: 10px; background: #080b10; padding: 8px 12px; border-radius: 10px; border: 1px solid #182030; }
+        .badge { display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .badge small { font-size: 10px; font-weight: 900; padding: 1px 4px; border-radius: 3px; }
-        .ht { color: #f59e0b; background: rgba(245, 158, 11, 0.15); }
-        .lt { color: #3b82f6; background: rgba(59, 130, 246, 0.15); }
+        .ht { color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
+        .lt { color: #3b82f6; background: rgba(59, 130, 246, 0.12); }
 
         /* Modal Overlay */
         .modal-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: #121824; border: 1px solid #28334a; padding: 25px; border-radius: 15px; width: 400px; text-align: center; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.5); }
+        .modal { background: #121824; border: 1px solid #28334a; padding: 25px; border-radius: 15px; width: 400px; text-align: center; position: relative; }
         .close-btn { position: absolute; top: 12px; right: 15px; font-size: 22px; cursor: pointer; color: #8a99ad; }
-        .modal-tier-box { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; background: #0b0e14; padding: 12px; border-radius: 10px; }
+        .modal-tier-box { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 15px; background: #080b10; padding: 15px; border-radius: 10px; border: 1px solid #1a2333; }
     </style>
 </head>
 <body>
+
+    <!-- SVG Definitions -->
+    <svg style="display: none;">
+        <!-- Trophy -->
+        <g id="svg-overall">
+            <path fill="#f59e0b" d="M19,5h-2V3c0-0.55-0.45-1-1-1H8C7.45,2,7,2.45,7,3v2H5C3.9,5,3,5.9,3,7v1c0,2.55,1.92,4.63,4.39,4.94C8.08,14.25,9.88,15,11,15v3H8c-0.55,0-1,0.45-1,1s0.45,1,1,1h8c0.55,0,1-0.45,1-1s-0.45-1-1-1h-3v-3c1.12,0,2.92-0.75,3.61-2.06C19.08,12.63,21,10.55,21,8V7C21,5.9,20.1,5,19,5z M5,8V7h2v3.82C5.84,10.4,5,9.3,5,8z M19,8c0,1.3-0.84,2.4-2,2.82V7h2V8z"/>
+        </g>
+        <!-- Sword -->
+        <g id="svg-sword">
+            <path fill="#52a5ed" d="M19.7,4.3c-0.4-0.4-1-0.4-1.4,0l-8.5,8.5c-0.2,0.2-0.5,0.2-0.7,0l-1.4-1.4c-0.4-0.4-1-0.4-1.4,0l-2.1,2.1c-0.4,0.4-0.4,1,0,1.4l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7l-2.8,2.8c-0.4,0.4-0.4,1,0,1.4l1.4,1.4c0.4,0.4,1,0.4,1.4,0l2.8-2.8c0.2-0.2,0.5-0.2,0.7,0l1.4,1.4c0.4,0.4,1,0.4,1.4,0l2.1-2.1c0.4-0.4,0.4-1,0-1.4l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7l8.5-8.5C20.1,5.3,20.1,4.7,19.7,4.3z"/>
+        </g>
+        <!-- Axe -->
+        <g id="svg-axe">
+            <path fill="#52a5ed" d="M18,3c-2,0-3.5,1-4.5,2.5L5,14c-0.6,0.6-0.6,1.5,0,2.1l2.9,2.9c0.6,0.6,1.5,0.6,2.1,0l8.5-8.5C20,9.5,21,8,21,6C21,4.3,19.7,3,18,3z"/>
+        </g>
+        <!-- NethOP / Helmet -->
+        <g id="svg-nethop">
+            <path fill="#a78bfa" d="M12,2C6.48,2,2,6.48,2,12v7c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2v-7C22,6.48,17.52,2,12,2z M18,16h-3c-0.55,0-1-0.45-1-1v-2c0-1.1-0.9-2-2-2s-2,0.9-2,2v2c0,0.55-0.45,1-1,1H6v-4c0-3.31,2.69-6,6-6s6,2.69,6,6V16z"/>
+        </g>
+        <!-- Pot -->
+        <g id="svg-pot">
+            <path fill="#f43f5e" d="M16,6V4h1c0.55,0,1-0.45,1-1s-0.45-1-1-1H7C6.45,2,6,2.45,6,3s0.45,1,1,1h1v2c-2.76,1.86-4,5.16-3.11,8.41C5.83,18.3,9.67,21,14,21c5.25,0,9.17-4.49,8-9.83C21.12,7.57,18.84,6.23,16,6z M12,19c-3.31,0-6-2.69-6-6c0-0.61,0.1-1.2,0.28-1.76c2.14,0.99,4.64,0.48,6.27-1.15c1.63,1.63,4.13,2.14,6.27,1.15c0.18,0.56,0.28,1.15,0.28,1.76C18,16.31,15.31,19,12,19z"/>
+        </g>
+        <!-- Vanilla / Box -->
+        <g id="svg-vanilla">
+            <path fill="#f59e0b" d="M12,2L2,7l10,5l10-5L12,2z M2,17l10,5l10-5M2,12l10,5l10-5"/>
+        </g>
+        <!-- SMP / Pearl -->
+        <g id="svg-smp">
+            <circle cx="12" cy="12" r="9" fill="#10b981"/>
+            <path fill="#042f2e" d="M15,8c-2,0-4,2-4,4s2,4,4,4s4-2,4-4S17,8,15,8z"/>
+        </g>
+        <!-- UHC / Heart -->
+        <g id="svg-uhc">
+            <path fill="#ef4444" d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z"/>
+        </g>
+    </svg>
 
     <!-- Top Navbar -->
     <header class="navbar">
@@ -105,15 +145,15 @@
 
         <!-- Category Tabs -->
         <div class="category-tabs">
-            <button class="tab-btn active"><i class="fa-solid fa-trophy text-gold"></i> Overall</button>
-            <button class="tab-btn"><i class="fa-solid fa-fire c-axe"></i> LTMs</button>
-            <button class="tab-btn"><i class="fa-solid fa-cube c-vanilla"></i> Vanilla</button>
-            <button class="tab-btn"><i class="fa-solid fa-heart c-uhc"></i> UHC</button>
-            <button class="tab-btn"><i class="fa-solid fa-flask c-pot"></i> Pot</button>
-            <button class="tab-btn"><i class="fa-solid fa-shield c-nethop"></i> NethOP</button>
-            <button class="tab-btn"><i class="fa-solid fa-tree c-smp"></i> SMP</button>
-            <button class="tab-btn"><i class="fa-solid fa-wand-magic-sparkles c-sword"></i> Sword</button>
-            <button class="tab-btn"><i class="fa-solid fa-gavel c-axe"></i> Axe</button>
+            <button class="tab-btn active"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-overall"/></svg></span> Overall</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-axe"/></svg></span> LTMs</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-vanilla"/></svg></span> Vanilla</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-uhc"/></svg></span> UHC</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-pot"/></svg></span> Pot</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-nethop"/></svg></span> NethOP</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-smp"/></svg></span> SMP</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-sword"/></svg></span> Sword</button>
+            <button class="tab-btn"><span class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-axe"/></svg></span> Axe</button>
         </div>
 
         <!-- Info / Server IP Bar -->
@@ -144,12 +184,12 @@
                 </div>
                 <div class="region-tag na">NA</div>
                 <div class="tier-badges" id="p1-badges">
-                    <span class="badge"><i class="fa-solid fa-cube c-vanilla"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-flask c-pot"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-tree c-smp"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles c-sword"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-shield c-nethop"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-gavel c-axe"></i><small class="lt">LT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-vanilla"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-pot"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-smp"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-sword"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-nethop"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-axe"/></svg></div><small class="lt">LT1</small></span>
                 </div>
             </div>
 
@@ -165,11 +205,11 @@
                 </div>
                 <div class="region-tag na">NA</div>
                 <div class="tier-badges" id="p2-badges">
-                    <span class="badge"><i class="fa-solid fa-wand-magic-sparkles c-sword"></i><small class="ht">HT3</small></span>
-                    <span class="badge"><i class="fa-solid fa-shield c-nethop"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-cube c-vanilla"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-flask c-pot"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-gavel c-axe"></i><small class="lt">LT2</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-sword"/></svg></div><small class="ht">HT3</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-nethop"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-vanilla"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-pot"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-axe"/></svg></div><small class="lt">LT2</small></span>
                 </div>
             </div>
 
@@ -185,10 +225,10 @@
                 </div>
                 <div class="region-tag eu">EU</div>
                 <div class="tier-badges" id="p3-badges">
-                    <span class="badge"><i class="fa-solid fa-flask c-pot"></i><small class="lt">LT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-cube c-vanilla"></i><small class="ht">LT3</small></span>
-                    <span class="badge"><i class="fa-solid fa-heart c-uhc"></i><small class="ht">HT1</small></span>
-                    <span class="badge"><i class="fa-solid fa-gavel c-axe"></i><small class="lt">LT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-pot"/></svg></div><small class="lt">LT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-vanilla"/></svg></div><small class="ht">LT3</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-uhc"/></svg></div><small class="ht">HT1</small></span>
+                    <span class="badge"><div class="icon-box"><svg viewBox="0 0 24 24"><use href="#svg-axe"/></svg></div><small class="lt">LT1</small></span>
                 </div>
             </div>
 
@@ -207,7 +247,7 @@
             
             <h4 style="margin-top:15px; text-align:left; font-size:13px; color:#8a99ad;">PLAYER TIERS:</h4>
             <div class="modal-tier-box" id="modalTiers">
-                <!-- Tiers inject directly from player card -->
+                <!-- Tiers inject dynamically -->
             </div>
         </div>
     </div>
@@ -239,7 +279,6 @@
             document.getElementById('modalRegion').innerText = "Region: " + region;
             document.getElementById('modalImg').src = img;
 
-            // Copy exact colorful badges into the modal
             let badgesHtml = document.getElementById(badgeId + '-badges').innerHTML;
             document.getElementById('modalTiers').innerHTML = badgesHtml;
 
