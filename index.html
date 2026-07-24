@@ -3,261 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUDARSHAN MCTIERS - Official Leaderboard</title>
-    
-    <!-- FontAwesome & Google Fonts -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-dark: #05070a;
-            --bg-card: #0b0f17;
-            --bg-card-hover: #121824;
-            --bg-tab: #0d111a;
-            --bg-tab-active: #161e2e;
-            --border-color: #161f2e;
-            --border-highlight: #2a384e;
-            --accent-gold: #f59e0b;
-            --text-main: #ffffff;
-            --text-muted: #8a99ad;
-            --font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); user-select: none; }
-        body { background-color: var(--bg-dark); color: var(--text-main); min-height: 100vh; padding-bottom: 60px; }
-        
-        /* Navigation Bar */
-        .navbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: rgba(11, 15, 23, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
-        .logo-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
-        .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
-        .logo-icon i { font-size: 20px; color: #000; }
-        .logo-text { font-weight: 800; font-size: 22px; }
-        .logo-text .highlight { color: var(--accent-gold); }
-
-        .search-box { background: #000000; padding: 9px 16px; border-radius: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color); }
-        .search-box input { background: transparent; border: none; outline: none; color: var(--text-main); font-size: 14px; width: 200px; }
-
-        /* Main Container */
-        .main-container { max-width: 1280px; margin: 30px auto; padding: 0 24px; }
-        .hero-banner { background: linear-gradient(180deg, rgba(11, 15, 23, 0.8) 0%, rgba(5, 7, 10, 0.95) 100%); border-radius: 16px; padding: 35px 40px; margin-bottom: 30px; border: 1px solid var(--border-color); }
-        
-        /* Category Navigation Bar */
-        .category-tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 25px; }
-        .tab-btn { background: var(--bg-tab); border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 16px; border-radius: 12px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
-        .tab-btn.active { background: var(--bg-tab-active); color: var(--text-main); border-color: var(--accent-gold); }
-        .tab-btn .img-box { width: 26px; height: 26px; background: #000000; border-radius: 6px; display: flex; align-items: center; justify-content: center; padding: 3px; border: 1px solid #1a1a1a; }
-        .tab-btn svg { width: 100%; height: 100%; display: block; }
-
-        .info-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--bg-card); padding: 12px 20px; border-radius: 12px; border: 1px solid var(--border-color); }
-        .filter-dropdown { background: #000000; border: 1px solid var(--border-color); color: var(--text-muted); padding: 8px 12px; border-radius: 8px; font-weight: 600; }
-        .server-ip-card { background: #000000; border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 8px; display: flex; align-items: center; gap: 12px; cursor: pointer; }
-
-        /* Leaderboard Cards & Items */
-        .leaderboard { display: flex; flex-direction: column; gap: 12px; }
-        .player-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px 22px; display: flex; align-items: center; gap: 20px; cursor: pointer; transition: 0.2s; }
-        .player-card:hover { background: var(--bg-card-hover); border-color: var(--border-highlight); }
-        .rank-1 { border-left: 5px solid #f59e0b; background: linear-gradient(90deg, rgba(245, 158, 11, 0.05) 0%, var(--bg-card) 100%); }
-        .rank-tag { font-size: 24px; font-weight: 900; color: var(--text-muted); width: 35px; text-align: center; }
-        .rank-1 .rank-tag { color: var(--accent-gold); }
-        .player-avatar img { width: 48px; height: 48px; border-radius: 10px; background: #000000; }
-        .player-info { flex-grow: 1; }
-        .player-name { font-size: 18px; font-weight: 800; }
-        .region-tag { padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 11px; background: rgba(185, 28, 28, 0.2); color: #f87171; }
-
-        /* Pure Black Background for Icons/Badges */
-        .tier-badges { display: flex; gap: 10px; background: #000000; padding: 8px 12px; border-radius: 10px; border: 1px solid #1a1a1a; align-items: center; }
-        .badge { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #000000; padding: 4px; border-radius: 8px; }
-        .badge-img-wrapper { width: 28px; height: 28px; background: #000000; border-radius: 6px; display: flex; align-items: center; justify-content: center; border: 1px solid #1f1f1f; padding: 3px; }
-        .badge-img-wrapper svg { width: 100%; height: 100%; display: block; }
-        .badge small { font-size: 10px; font-weight: 900; padding: 2px 6px; border-radius: 4px; line-height: 1; }
-        .ht { color: #fbbf24; background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); }
-        .lt { color: #60a5fa; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); }
-
-        /* Profile Modal */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 1000; }
-        .modal { background: var(--bg-card); border: 1px solid var(--border-highlight); padding: 25px; border-radius: 20px; width: 420px; text-align: center; position: relative; }
-        .close-btn { position: absolute; top: 14px; right: 16px; font-size: 20px; cursor: pointer; color: var(--text-muted); }
-    </style>
+    <title>sudarshan Tierlist</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome Icons Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <header class="navbar">
-        <div class="logo-container">
-            <div class="logo-icon"><i class="fa-solid fa-crown"></i></div>
-            <div class="logo-text">SUDARSHAN <span class="highlight">TIERS</span></div>
-        </div>
-        <div class="search-box">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Search player IGN...">
+    <!-- Header Section -->
+    <header class="site-header">
+        <h1 class="logo">XTREMETIERS</h1>
+        <div class="header-buttons">
+            <button class="btn-orange">Leaderboard</button>
+            <button class="btn-dark">Compare Matrix</button>
+            <button class="btn-discord">Discord</button>
         </div>
     </header>
 
-    <main class="main-container">
-        <div class="hero-banner">
-            <h1 style="font-size: 30px; font-weight: 800;">Official Competitive Leaderboard</h1>
-            <p style="color: var(--text-muted);">Track top tier Minecraft PvP players across various game modes.</p>
-        </div>
+    <!-- Navigation Tabs with Icons -->
+    <nav class="category-nav">
+        <button class="tab active"><i class="fa-solid fa-trophy"></i> OVERALL</button>
+        <button class="tab"><i class="fa-solid fa-gem"></i> VANILLA</button>
+        <button class="tab"><i class="fa-solid fa-khanda"></i> SWORD</button>
+        <button class="tab"><i class="fa-solid fa-wand-magic-sparkles"></i> NETHPOT</button>
+        <button class="tab"><i class="fa-solid fa-gamepad"></i> UHC</button>
+    </nav>
 
-        <div class="category-tabs" id="categoryTabs">
-            <button class="tab-btn active" onclick="filterCategory('overall', this)" id="tab-overall">Overall</button>
-            <button class="tab-btn" onclick="filterCategory('crystal', this)" id="tab-crystal">Vanilla</button>
-            <button class="tab-btn" onclick="filterCategory('uhc', this)" id="tab-uhc">UHC</button>
-            <button class="tab-btn" onclick="filterCategory('pot', this)" id="tab-pot">Pot</button>
-            <button class="tab-btn" onclick="filterCategory('nethop', this)" id="tab-nethop">NethOP</button>
-            <button class="tab-btn" onclick="filterCategory('smp', this)" id="tab-smp">SMP</button>
-            <button class="tab-btn" onclick="filterCategory('sword', this)" id="tab-sword">Sword</button>
-            <button class="tab-btn" onclick="filterCategory('axe', this)" id="tab-axe">Axe</button>
-            <button class="tab-btn" onclick="filterCategory('mace', this)" id="tab-mace">Mace</button>
-        </div>
-
-        <div class="info-bar">
-            <select class="filter-dropdown" id="regionFilter" onchange="filterRegion()">
-                <option value="all">All Regions</option>
-                <option value="NA">North America (NA)</option>
-                <option value="EU">Europe (EU)</option>
-                <option value="ASIA">Asia (ASIA)</option>
-            </select>
-            <div class="server-ip-card" onclick="navigator.clipboard.writeText('play.nglord.fun'); alert('Copied Server IP!');">
-                <span style="background: #dc2626; color: white; font-size: 10px; font-weight: 900; padding: 3px 6px; border-radius: 4px;">SERVER</span>
+    <!-- Main Leaderboard Container -->
+    <main class="leaderboard-container">
+        
+        <!-- Rank 1 Row -->
+        <div class="player-card rank-1">
+            <div class="rank-number">1.</div>
+            <div class="player-info">
+                <img src="https://minotar.net/avatar/jintudeka/50.png" alt="Avatar" class="avatar">
                 <div>
-                    <span style="font-size: 9px; color: var(--text-muted); font-weight: 800; display: block;">CLICK TO COPY IP</span>
-                    <span style="font-size: 12px; font-weight: 700; color: var(--accent-gold);">play.nglord.fun <i class="fa-regular fa-copy"></i></span>
+                    <span class="player-name">jintudeka</span>
+                    <span class="player-title">COMBAT MASTER <span class="points">(1584 points)</span></span>
                 </div>
+            </div>
+            <div class="region-badge">AS</div>
+            <div class="badges">
+                <span class="badge ht4"><i class="fa-solid fa-book"></i> HT4</span>
+                <span class="badge ht3"><i class="fa-solid fa-fire"></i> HT3</span>
             </div>
         </div>
 
-        <div class="leaderboard" id="leaderboard"></div>
+        <!-- Rank 2 Row -->
+        <div class="player-card rank-2">
+            <div class="rank-number">2.</div>
+            <div class="player-info">
+                <img src="https://minotar.net/avatar/SaumyaXtreme/50.png" alt="Avatar" class="avatar">
+                <div>
+                    <span class="player-name">SaumyaXtreme</span>
+                    <span class="player-title">COMBAT MASTER <span class="points">(946 points)</span></span>
+                </div>
+            </div>
+            <div class="region-badge">AS</div>
+            <div class="badges">
+                <span class="badge ht3"><i class="fa-solid fa-fire"></i> HT3</span>
+            </div>
+        </div>
+
     </main>
 
-    <div class="modal-overlay" id="playerModal">
-        <div class="modal">
-            <span class="close-btn" onclick="document.getElementById('playerModal').style.display='none'">&times;</span>
-            <img id="modalImg" src="" style="width:70px; height:70px; border-radius:12px; margin-bottom:10px; background:#000;">
-            <h2 id="modalName" style="color:#fff;"></h2>
-            <p id="modalRank" style="color:#f59e0b; margin-top:4px; font-weight: bold;"></p>
-            <p id="modalPoints" style="color:#8a99ad; margin:4px 0; font-size:13px;"></p>
-            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:15px; background:#000000; padding:18px; border-radius:12px; border:1px solid #1a1a1a;" id="modalTiers"></div>
-        </div>
-    </div>
-
-    <script>
-        // Exact Vectors Matched to Uploaded Photos with Black Backgrounds
-        const ITEM_SVGS = {
-            overall: `<svg viewBox="0 0 100 100"><path d="M 25,15 L 75,15 C 75,15 78,48 50,55 C 22,48 25,15 25,15 Z" fill="#f59e0b"/><path d="M 50,15 L 75,15 C 75,15 78,48 50,55 Z" fill="#d97706"/><path d="M 25,20 C 12,20 10,38 23,42 C 24,35 25,28 25,20 Z" fill="#f59e0b"/><path d="M 75,20 C 88,20 90,38 77,42 C 76,35 75,28 75,20 Z" fill="#d97706"/><rect x="44" y="55" width="12" height="20" fill="#d97706"/><path d="M 30,75 L 70,75 L 75,88 L 25,88 Z" fill="#f59e0b"/></svg>`,
-            pot: `<svg viewBox="0 0 100 100"><path d="M 38,15 L 62,15 A 5,5 0 0,1 67,20 L 67,28 L 59,38 A 30,30 0 1,1 41,38 L 33,28 L 33,20 A 5,5 0 0,1 38,15 Z" fill="#ffffff"/><path d="M 43,21 L 57,21 L 57,29 L 52,35 L 52,42 A 22,22 0 1,1 48,42 L 48,35 L 43,29 Z" fill="#000000"/><path d="M 28,62 C 40,58 60,70 72,62 A 22,22 0 0,1 50,86 A 22,22 0 0,1 28,62 Z" fill="#d93856"/></svg>`,
-            axe: `<svg viewBox="0 0 100 100"><rect x="15" y="65" width="60" height="14" rx="7" transform="rotate(-45 45 72)" fill="#528be8"/><path d="M 50,20 L 75,45 C 82,52 75,65 65,65 L 40,40 C 35,30 40,20 50,20 Z" fill="#6bbbe8"/></svg>`,
-            mace: `<svg viewBox="0 0 100 100"><rect x="15" y="65" width="60" height="14" rx="7" transform="rotate(-45 45 72)" fill="#528be8"/><path d="M 50,20 L 75,45 C 82,52 75,65 65,65 L 40,40 C 35,30 40,20 50,20 Z" fill="#6bbbe8"/></svg>`,
-            crystal: `<svg viewBox="0 0 100 100"><polygon points="50,10 85,30 85,70 50,90 15,70 15,30" fill="none" stroke="#ffffff" stroke-width="10" stroke-linejoin="round"/><line x1="50" y1="50" x2="80" y2="30" stroke="#b4c6ff" stroke-width="8"/><line x1="50" y1="50" x2="20" y2="40" stroke="#b4c6ff" stroke-width="8"/><line x1="50" y1="50" x2="55" y2="80" stroke="#b4c6ff" stroke-width="8"/><polygon points="50,28 72,40 72,64 50,76 28,64 28,40" fill="#c084fc"/></svg>`,
-            uhc: `<svg viewBox="0 0 100 100"><path d="M 50,88 C 20,65 10,48 10,32 C 10,18 22,8 36,8 C 44,8 50,14 50,14 C 50,14 56,8 64,8 C 78,8 90,18 90,32 C 90,48 80,65 50,88 Z" fill="#d94848"/><path d="M 28,30 C 30,42 38,50 42,52" stroke="#9e2a2a" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M 72,30 C 70,42 62,50 58,52" stroke="#9e2a2a" stroke-width="8" stroke-linecap="round" fill="none"/></svg>`,
-            sword: `<svg viewBox="0 0 100 100"><path d="M 38,58 L 72,24 C 76,20 85,15 85,15 C 85,15 80,24 76,28 L 42,62 Z" fill="#6bbbe8"/><rect x="26" y="52" width="28" height="12" rx="4" transform="rotate(-45 40 58)" fill="#528be8"/><rect x="18" y="70" width="16" height="10" rx="3" transform="rotate(-45 26 75)" fill="#528be8"/><circle cx="16" cy="84" r="6" fill="#528be8"/></svg>`,
-            nethop: `<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="#0b4638"/><path d="M 28,24 A 32,32 0 0,1 52,16 A 32,32 0 0,0 20,40 A 32,32 0 0,1 28,24 Z" fill="#4ade80"/><path d="M 72,76 A 32,32 0 0,1 48,84 A 32,32 0 0,0 80,60 A 32,32 0 0,1 72,76 Z" fill="#4ade80"/></svg>`,
-            smp: `<svg viewBox="0 0 100 100"><path d="M 15,35 C 15,15 35,12 50,12 C 65,12 85,15 85,35 L 85,78 C 85,82 80,85 75,85 L 63,85 C 58,85 58,75 58,70 C 58,60 42,60 42,70 C 42,75 42,85 37,85 L 25,85 C 20,85 15,82 15,78 Z" fill="#9370db"/><path d="M 25,40 C 25,25 38,20 50,20 L 78,50 L 78,75 L 66,75 L 66,60 C 66,48 34,48 34,60 L 34,75 L 25,75 Z" fill="#6a429c"/></svg>`
-        };
-
-        // Attach Black-Box Images to Tabs
-        Object.keys(ITEM_SVGS).forEach(key => {
-            const btn = document.getElementById(`tab-${key}`);
-            if (btn) {
-                const label = btn.innerText;
-                btn.innerHTML = `<div class="img-box">${ITEM_SVGS[key]}</div> ${label}`;
-            }
-        });
-
-        const playersData = [
-            {
-                rank: 1, name: "Marlowww", title: "Combat Grandmaster", points: 450, region: "NA", skin: "https://mc-heads.net/avatar/Marlowww/100",
-                tiers: [
-                    { mode: "sword", level: "HT1", type: "ht" },
-                    { mode: "smp", level: "HT1", type: "ht" },
-                    { mode: "nethop", level: "HT1", type: "ht" },
-                    { mode: "mace", level: "HT1", type: "ht" },
-                    { mode: "crystal", level: "HT1", type: "ht" },
-                    { mode: "pot", level: "HT1", type: "ht" },
-                    { mode: "uhc", level: "LT1", type: "lt" },
-                    { mode: "axe", level: "LT1", type: "lt" }
-                ]
-            },
-            {
-                rank: 2, name: "catboymuce", title: "Combat Master", points: 330, region: "NA", skin: "https://mc-heads.net/avatar/catboymuce/385",
-                tiers: [
-                    { mode: "sword", level: "HT3", type: "ht" },
-                    { mode: "nethop", level: "HT1", type: "ht" },
-                    { mode: "crystal", level: "HT1", type: "ht" },
-                    { mode: "pot", level: "HT1", type: "ht" },
-                    { mode: "axe", level: "LT2", type: "lt" }
-                ]
-            }
-        ];
-
-        let currentCat = "overall";
-
-        function renderLeaderboard(data) {
-            const container = document.getElementById("leaderboard");
-            container.innerHTML = "";
-
-            data.forEach(player => {
-                let displayTiers = currentCat === "overall" ? player.tiers : player.tiers.filter(t => t.mode === currentCat);
-                if (currentCat !== "overall" && !displayTiers.length) return;
-
-                let badgesHTML = displayTiers.map(t => `
-                    <div class="badge">
-                        <div class="badge-img-wrapper">${ITEM_SVGS[t.mode]}</div>
-                        <small class="${t.type}">${t.level}</small>
-                    </div>
-                `).join('');
-
-                container.innerHTML += `
-                    <div class="player-card ${player.rank === 1 ? 'rank-1' : ''}" onclick="openProfile('${player.name}')">
-                        <div class="rank-tag">${player.rank}.</div>
-                        <div class="player-avatar"><img src="${player.skin}"></div>
-                        <div class="player-info">
-                            <div class="player-name">${player.name}</div>
-                            <div style="font-size:12px; color:var(--text-muted);"><i class="fa-solid fa-gem" style="color:#f59e0b;"></i> ${player.title} (${player.points} pts)</div>
-                        </div>
-                        <div class="region-tag">${player.region}</div>
-                        <div class="tier-badges">${badgesHTML}</div>
-                    </div>
-                `;
-            });
-        }
-
-        function filterCategory(cat, btn) {
-            currentCat = cat;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderLeaderboard(playersData);
-        }
-
-        function filterRegion() {
-            let reg = document.getElementById("regionFilter").value;
-            renderLeaderboard(reg === "all" ? playersData : playersData.filter(p => p.region === reg));
-        }
-
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            let val = e.target.value.toLowerCase();
-            renderLeaderboard(playersData.filter(p => p.name.toLowerCase().includes(val)));
-        });
-
-        function openProfile(name) {
-            let p = playersData.find(x => x.name === name);
-            if (!p) return;
-            document.getElementById("modalName").innerText = p.name;
-            document.getElementById("modalRank").innerText = p.title;
-            document.getElementById("modalPoints").innerText = p.points + " Tier Points (" + p.region + ")";
-            document.getElementById("modalImg").src = p.skin;
-
-            document.getElementById("modalTiers").innerHTML = p.tiers.map(t => `
-                <div class="badge" style="transform: scale(1.15);">
-                    <div class="badge-img-wrapper">${ITEM_SVGS[t.mode]}</div>
-                    <small class="${t.type}">${t.level}</small>
-                </div>
-            `).join('');
-
-            document.getElementById("playerModal").style.display = "flex";
-        }
-
-        window.onload = () => renderLeaderboard(playersData);
-    </script>
 </body>
 </html>
