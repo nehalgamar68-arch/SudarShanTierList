@@ -175,6 +175,8 @@
     </main>
 
 <script>
+    // Same Apps Script deployment the admin panel writes to -- this page always reads
+    // whatever is currently in the sheet, so admin edits show up here on refresh.
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6ML7OOK3MkcgKjRDz4I1LHOeubsnGlLB5-HRuiUBcHzVSVcEdUFbMBzc0kND1qxb9/exec";
 
     const GAMEMODES = ["vanilla","sword","nethpot","diamondpot","uhc","mace","smp"];
@@ -182,6 +184,7 @@
         vanilla: "fa-shield-halved", sword: "fa-khanda", nethpot: "fa-wand-magic-sparkles",
         diamondpot: "fa-gem", uhc: "fa-gamepad", mace: "fa-hammer", smp: "fa-skull"
     };
+    // Keep in sync with the admin panel's points table (LT5 -> HT1 order).
     const POINTS = { LT5:5, HT5:10, LT4:10, HT4:20, LT3:15, HT3:30, LT2:20, HT2:40, LT1:25, HT1:50 };
 
     let allPlayers = [];
@@ -207,7 +210,7 @@
     }
 
     function levelClass(tier){
-        const n = tier.slice(2); 
+        const n = tier.slice(2); // "HT4" -> "4"
         return "lvl-" + n;
     }
 
@@ -259,7 +262,7 @@
 
     async function loadConfig(){
         try{
-            const res = await fetch(APPS_SCRIPT_URL + "?type=config", { redirect: "follow" });
+            const res = await fetch(APPS_SCRIPT_URL + "?type=config");
             const text = await res.text();
             const parsed = Papa.parse(text, { header:true, skipEmptyLines:true });
             let logoUrl = "", siteName = "";
@@ -272,39 +275,25 @@
             if (siteName) document.getElementById('brandTitle').textContent = siteName;
             const img = document.getElementById('brandLogo');
             if (logoUrl){ img.src = logoUrl; img.style.display = 'inline-block'; }
-        }catch(e){ /* config is optional */ }
+        }catch(e){ /* config is optional, keep defaults */ }
     }
 
     async function loadPlayers(){
         setStatus(true, 'Loading live data...');
         try{
-            // Adding redirect: 'follow' handles Google Apps Script 302 redirects correctly inside browser fetch
-            const res = await fetch(APPS_SCRIPT_URL + "?type=players", { redirect: "follow" });
+            const res = await fetch(APPS_SCRIPT_URL + "?type=players");
             if (!res.ok) throw new Error('HTTP ' + res.status);
             const text = await res.text();
-            
             const parsed = Papa.parse(text, { header:true, skipEmptyLines:true });
-            
             allPlayers = parsed.data.filter(r => r.name).map(r => {
                 const tiers = {};
                 GAMEMODES.forEach(gm => tiers[gm] = (r[gm] || '').toUpperCase());
                 return { name: r.name.trim(), skin: (r.skin||'').trim(), region: (r.region||'').trim(), tiers };
             });
-
-            if(allPlayers.length === 0) {
-                throw new Error("No players found in sheet data.");
-            }
-
             renderList();
             setStatus(true, `Live — ${allPlayers.length} players synced`);
         }catch(e){
-            setStatus(false, 'Sheet fetch failed. Check Apps Script URL / Permissions.');
-            document.getElementById('leaderboard').innerHTML = `
-                <div class="empty" style="color: #ff6b6b;">
-                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 24px; margin-bottom: 10px;"></i><br>
-                    <strong>Loading Error:</strong> Could not read data from Google Sheets.<br>
-                    <span style="font-size: 11px; color: #8b91ac;">Make sure your Apps Script web app is deployed with Access set to <b>"Anyone"</b>.</span>
-                </div>`;
+            setStatus(false, 'Could not reach the sheet — showing last known data.');
         }
     }
 
@@ -314,6 +303,7 @@
 
     loadConfig();
     loadPlayers();
+    // Light auto-refresh so the page stays close to live without a manual click.
     setInterval(loadPlayers, 30000);
 </script>
 
