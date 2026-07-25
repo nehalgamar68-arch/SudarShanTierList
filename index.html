@@ -3,176 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCTiers - Rankings</title>
-    <!-- Font Awesome Icons Link -->
+    <title>Sudharshan Tiers - Rankings</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
     <style>
-        
+        :root {
+            --neon-cyan: #00fff2;
+            --neon-pink: #ff2fd6;
+            --neon-purple: #b026ff;
+            --neon-gold: #ffe600;
+            --bg-black: #050509;
+            --panel: #0c0d16;
+            --panel-border: #1c1d33;
+        }
         body {
-            background-color: #0f131a;
+            background-color: var(--bg-black);
+            background-image:
+                radial-gradient(circle at 15% 10%, rgba(255,47,214,0.07), transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(0,255,242,0.07), transparent 40%);
             color: #ffffff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 20px;
+            font-weight: 700;
         }
         .site-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding-bottom: 20px;
-            border-bottom: 1px solid #21262d;
+            border-bottom: 1px solid var(--panel-border);
         }
+        .brand { display:flex; align-items:center; gap:12px; }
+        .brand img { height:34px; width:34px; border-radius:6px; object-fit:cover; display:none; }
         .logo {
-            color: #ff7700;
             font-weight: 900;
             letter-spacing: 2px;
-            font-size: 24px;
-        }
-        .header-buttons button {
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .btn-orange { background-color: #ff9933; color: #000; }
-        .btn-dark { background-color: #21262d; color: #fff; }
-        .btn-discord { background-color: #5865F2; color: #fff; }
-        
-        /* Category Navigation */
-        .category-nav {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            overflow-x: auto;
-            padding-bottom: 5px;
-        }
-        .tab {
-            background: #161b22;
-            border: none;
-            color: #8b949e;
-            padding: 10px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            white-space: nowrap;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-        }
-        .tab.active {
-            background: #ff9933;
-            color: #000;
-        }
-
-        /* Search & Filter Bar */
-        .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .search-input {
-            background: #161b22;
-            border: 1px solid #30363d;
-            padding: 10px 15px;
-            border-radius: 6px;
-            color: #fff;
-            width: 250px;
-            outline: none;
-        }
-        .region-select {
-            background: #161b22;
-            border: 1px solid #30363d;
-            padding: 10px 15px;
-            border-radius: 6px;
-            color: #fff;
-            outline: none;
-            cursor: pointer;
-        }
-
-        /* Leaderboard Container */
-        .leaderboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .player-card {
-            display: flex;
-            align-items: center;
-            background: #161b22;
-            margin-bottom: 12px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            justify-content: space-between;
-            border-left: 6px solid #30363d;
-        }
-        .rank-1 { border-left-color: #f1e05a; background: linear-gradient(90deg, #262111 0%, #161b22 50%); }
-        .rank-2 { border-left-color: #8b949e; }
-        .rank-3 { border-left-color: #d1863b; }
-        
-        .rank-number {
-            font-size: 22px;
-            font-weight: bold;
-            width: 45px;
-        }
-        .player-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-grow: 1;
-        }
-        .avatar {
-            border-radius: 4px;
-        }
-        .player-name {
-            font-weight: bold;
-            font-size: 17px;
-            display: block;
-            color: #fff;
-        }
-        .player-title {
-            font-size: 11px;
-            color: #8b949e;
+            font-size: 26px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 18px rgba(0,255,242,0.35);
             text-transform: uppercase;
         }
-        .points {
-            color: #ffb347;
+        .header-buttons button {
+            padding: 9px 18px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 900;
+            cursor: pointer;
+            margin-left: 10px;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+            font-size: 13px;
         }
+        .btn-orange { background: var(--neon-pink); color: #000; box-shadow: 0 0 14px rgba(255,47,214,0.6); }
+        .btn-dark { background: var(--panel); color: var(--neon-cyan); border: 1px solid var(--neon-cyan); box-shadow: 0 0 10px rgba(0,255,242,0.25); }
+        .btn-discord { background: #5865F2; color: #fff; box-shadow: 0 0 14px rgba(88,101,242,0.6); }
+
+        .category-nav { display: flex; gap: 10px; margin: 20px 0; overflow-x: auto; padding-bottom: 5px; }
+        .tab {
+            background: var(--panel); border: 1px solid var(--panel-border); color: #8b91ac;
+            padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 900;
+            white-space: nowrap; display: flex; align-items: center; gap: 8px; font-size: 13px;
+        }
+        .tab.active {
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+            color: #000; border-color: transparent;
+            box-shadow: 0 0 16px rgba(0,255,242,0.5), 0 0 16px rgba(255,47,214,0.4);
+        }
+
+        .filter-bar { display: flex; gap: 15px; margin-bottom: 25px; align-items:center; }
+        .search-input, .region-select {
+            background: var(--panel); border: 1px solid var(--panel-border); padding: 10px 15px;
+            border-radius: 6px; color: #fff; outline: none; font-weight: 700;
+        }
+        .search-input { width: 250px; }
+        .status-pill { font-size:11px; font-weight:800; color:#8b91ac; margin-left:auto; display:flex; align-items:center; gap:8px; }
+        .status-dot { width:8px; height:8px; border-radius:50%; background:#3dffa0; box-shadow:0 0 8px #3dffa0; }
+        .status-dot.err { background:#ff6b6b; box-shadow:0 0 8px #ff6b6b; }
+        .refresh-btn { background: var(--panel); border: 1px solid var(--panel-border); color: var(--neon-cyan); border-radius:6px; padding:8px 12px; cursor:pointer; font-weight:800; font-size:12px; }
+
+        .leaderboard-container { max-width: 1200px; margin: 0 auto; }
+        .player-card {
+            position: relative; display: flex; align-items: center; background: var(--panel);
+            margin-bottom: 14px; padding: 15px 20px 15px 76px; border-radius: 8px;
+            justify-content: space-between; border: 1px solid var(--panel-border); overflow: hidden;
+        }
+        .rank-shape {
+            position: absolute; top: 0; left: 0; width: 0; height: 0; border-style: solid;
+            border-width: 64px 64px 0 0;
+            border-color: var(--tri-color, var(--neon-cyan)) transparent transparent transparent;
+            filter: drop-shadow(0 0 8px var(--tri-color, var(--neon-cyan)));
+        }
+        .rank-number { position: absolute; top: 6px; left: 5px; font-size: 19px; font-weight: 900; color: #000; z-index: 2; }
+        .player-info { display: flex; align-items: center; gap: 15px; flex-grow: 1; }
+        .avatar { border-radius: 4px; border: 1px solid var(--panel-border); }
+        .player-name { font-weight: 900; font-size: 17px; display: block; color: #fff; letter-spacing: .3px; }
+        .player-title { font-size: 11px; color: #8b91ac; text-transform: uppercase; font-weight: 800; }
+        .points { color: var(--neon-cyan); text-shadow: 0 0 8px rgba(0,255,242,0.5); }
         .region-badge {
-            background: #4a154b;
-            color: #e784e7;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-right: 20px;
+            background: #1a0b2e; color: var(--neon-purple); border: 1px solid var(--neon-purple);
+            padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 900; margin-right: 20px;
+            box-shadow: 0 0 8px rgba(176,38,255,0.35);
         }
-        .badges {
-            display: flex;
-            gap: 6px;
+        .badges { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+        .tier-badge { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 42px; }
+        .tier-icon {
+            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; font-size: 14px; background: var(--bg-black); border: 2px solid;
         }
-        .badge {
-            padding: 5px 10px;
-            font-size: 11px;
-            font-weight: bold;
-            border-radius: 4px;
-            border: 1px solid #30363d;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .badge.ht4 { background: #1b3622; color: #3fb950; }
-        .badge.ht3 { background: #3b2a1a; color: #d29922; }
-        .badge.lt3 { background: #1f242d; color: #58a6ff; }
+        .tier-icon.vanilla    { color: #ff5f8f; border-color: #ff5f8f; box-shadow: 0 0 8px #ff5f8f66; }
+        .tier-icon.sword      { color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 8px #00fff266; }
+        .tier-icon.nethpot    { color: var(--neon-purple); border-color: var(--neon-purple); box-shadow: 0 0 8px #b026ff66; }
+        .tier-icon.diamondpot { color: #29e0ff; border-color: #29e0ff; box-shadow: 0 0 8px #29e0ff66; }
+        .tier-icon.uhc        { color: #3dffa0; border-color: #3dffa0; box-shadow: 0 0 8px #3dffa066; }
+        .tier-icon.mace       { color: #ffa657; border-color: #ffa657; box-shadow: 0 0 8px #ffa65766; }
+        .tier-icon.smp        { color: var(--neon-pink); border-color: var(--neon-pink); box-shadow: 0 0 8px #ff2fd666; }
+        .tier-label { font-size: 10px; font-weight: 900; letter-spacing: .3px; padding: 2px 6px; border-radius: 4px; }
+        .tier-label.lvl-1 { background: #2b220a; color: var(--neon-gold); }
+        .tier-label.lvl-2 { background: #0a2b1c; color: #3dffa0; }
+        .tier-label.lvl-3 { background: #0a1f2b; color: var(--neon-cyan); }
+        .tier-label.lvl-4 { background: #1c0a2b; color: var(--neon-purple); }
+        .tier-label.lvl-5 { background: #14141f; color: #8b91ac; }
+        .empty { text-align:center; color:#8b91ac; font-size:13px; padding: 40px 0; }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
     <header class="site-header">
-        <h1 class="logo">XTREMETIERS</h1>
+        <div class="brand">
+            <img id="brandLogo" alt="logo">
+            <h1 class="logo" id="brandTitle">Sudharshan Tiers</h1>
+        </div>
         <div class="header-buttons">
             <button class="btn-orange">Leaderboard</button>
             <button class="btn-dark">Compare Matrix</button>
@@ -180,7 +145,6 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
     <nav class="category-nav">
         <button class="tab active"><i class="fa-solid fa-trophy"></i> OVERALL</button>
         <button class="tab"><i class="fa-solid fa-shield-halved"></i> VANILLA</button>
@@ -192,73 +156,156 @@
         <button class="tab"><i class="fa-solid fa-skull"></i> SMP</button>
     </nav>
 
-    <!-- Search & Filter Bar -->
     <div class="filter-bar">
-        <input type="text" class="search-input" placeholder="Search operational indices...">
-        <select class="region-select">
-            <option>All Global Regions</option>
-            <option>Asia (AS)</option>
-            <option>North America (NA)</option>
-            <option>Europe (EU)</option>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search operational indices...">
+        <select class="region-select" id="regionSelect">
+            <option value="">All Global Regions</option>
+            <option value="AS">Asia (AS)</option>
+            <option value="NA">North America (NA)</option>
+            <option value="EU">Europe (EU)</option>
+            <option value="OCE">Oceania (OCE)</option>
+            <option value="SA">South America (SA)</option>
         </select>
+        <button class="refresh-btn" id="refreshBtn"><i class="fa-solid fa-rotate"></i> Refresh</button>
+        <div class="status-pill"><span class="status-dot" id="statusDot"></span><span id="statusText">Loading live data...</span></div>
     </div>
 
-    <!-- Main Leaderboard Container -->
-    <main class="leaderboard-container">
-        
-        <!-- Rank 1 -->
-        <div class="player-card rank-1">
-            <div class="rank-number">1.</div>
-            <div class="player-info">
-                <img src="https://minotar.net/avatar/jintudeka/50.png" alt="Avatar" class="avatar">
-                <div>
-                    <span class="player-name">jintudeka</span>
-                    <span class="player-title">Combat Master <span class="points">(1584 points)</span></span>
-                </div>
-            </div>
-            <div class="region-badge">AS</div>
-            <div class="badges">
-                <span class="badge ht4"><i class="fa-solid fa-book"></i> HT4</span>
-                <span class="badge ht3"><i class="fa-solid fa-fire"></i> HT3</span>
-                <span class="badge lt3"><i class="fa-solid fa-shield"></i> LT3</span>
-            </div>
-        </div>
-
-        <!-- Rank 2 -->
-        <div class="player-card rank-2">
-            <div class="rank-number">2.</div>
-            <div class="player-info">
-                <img src="https://minotar.net/avatar/SaumyaXtreme/50.png" alt="Avatar" class="avatar">
-                <div>
-                    <span class="player-name">SaumyaXtreme</span>
-                    <span class="player-title">Combat Master <span class="points">(946 points)</span></span>
-                </div>
-            </div>
-            <div class="region-badge">AS</div>
-            <div class="badges">
-                <span class="badge ht3"><i class="fa-solid fa-fire"></i> HT3</span>
-                <span class="badge ht4"><i class="fa-solid fa-book"></i> HT4</span>
-            </div>
-        </div>
-
-        <!-- Rank 3 -->
-        <div class="player-card rank-3">
-            <div class="rank-number">3.</div>
-            <div class="player-info">
-                <img src="https://minotar.net/avatar/FyreDeft/50.png" alt="Avatar" class="avatar">
-                <div>
-                    <span class="player-name">FyreDeft</span>
-                    <span class="player-title">Combat Master <span class="points">(844 points)</span></span>
-                </div>
-            </div>
-            <div class="region-badge">AS</div>
-            <div class="badges">
-                <span class="badge lt3"><i class="fa-solid fa-khanda"></i> LT5</span>
-                <span class="badge ht3"><i class="fa-solid fa-axe"></i> HT5</span>
-            </div>
-        </div>
-
+    <main class="leaderboard-container" id="leaderboard">
+        <div class="empty">Loading rankings...</div>
     </main>
+
+<script>
+    // Same Apps Script deployment the admin panel writes to -- this page always reads
+    // whatever is currently in the sheet, so admin edits show up here on refresh.
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw6ML7OOK3MkcgKjRDz4I1LHOeubsnGlLB5-HRuiUBcHzVSVcEdUFbMBzc0kND1qxb9/exec";
+
+    const GAMEMODES = ["vanilla","sword","nethpot","diamondpot","uhc","mace","smp"];
+    const GAMEMODE_ICONS = {
+        vanilla: "fa-shield-halved", sword: "fa-khanda", nethpot: "fa-wand-magic-sparkles",
+        diamondpot: "fa-gem", uhc: "fa-gamepad", mace: "fa-hammer", smp: "fa-skull"
+    };
+    // Keep in sync with the admin panel's points table (LT5 -> HT1 order).
+    const POINTS = { LT5:5, HT5:10, LT4:10, HT4:20, LT3:15, HT3:30, LT2:20, HT2:40, LT1:25, HT1:50 };
+
+    let allPlayers = [];
+
+    function calcPoints(p){
+        let total = 0;
+        for (const gm of GAMEMODES){
+            const t = p.tiers[gm];
+            if (t && POINTS[t] !== undefined) total += POINTS[t];
+        }
+        return total;
+    }
+
+    function avatarUrl(p){
+        return p.skin ? p.skin : `https://minotar.net/avatar/${encodeURIComponent(p.name)}/50.png`;
+    }
+
+    function triColorForRank(i){
+        if (i === 0) return "var(--neon-gold)";
+        if (i === 1) return "var(--neon-pink)";
+        if (i === 2) return "var(--neon-purple)";
+        return "var(--neon-cyan)";
+    }
+
+    function levelClass(tier){
+        const n = tier.slice(2); // "HT4" -> "4"
+        return "lvl-" + n;
+    }
+
+    function renderList(){
+        const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+        const region = document.getElementById('regionSelect').value;
+        const board = document.getElementById('leaderboard');
+
+        let list = allPlayers.filter(p =>
+            (!q || p.name.toLowerCase().includes(q)) &&
+            (!region || (p.region || '').toUpperCase() === region)
+        );
+        list = list.slice().sort((a,b) => calcPoints(b) - calcPoints(a));
+
+        if (!list.length){
+            board.innerHTML = '<div class="empty">No players match.</div>';
+            return;
+        }
+
+        board.innerHTML = list.map((p, i) => {
+            const badges = GAMEMODES.filter(gm => p.tiers[gm]).map(gm => `
+                <div class="tier-badge">
+                    <div class="tier-icon ${gm}"><i class="fa-solid ${GAMEMODE_ICONS[gm]}"></i></div>
+                    <span class="tier-label ${levelClass(p.tiers[gm])}">${p.tiers[gm]}</span>
+                </div>
+            `).join('');
+
+            return `
+            <div class="player-card" style="--tri-color:${triColorForRank(i)}">
+                <div class="rank-shape"></div>
+                <div class="rank-number">${i+1}</div>
+                <div class="player-info">
+                    <img src="${avatarUrl(p)}" alt="Avatar" class="avatar" width="50" height="50">
+                    <div>
+                        <span class="player-name">${p.name}</span>
+                        <span class="player-title">Combat Master <span class="points">(${calcPoints(p)} points)</span></span>
+                    </div>
+                </div>
+                <div class="region-badge">${p.region || '-'}</div>
+                <div class="badges">${badges || '<span style="color:#8b91ac; font-size:11px;">Unranked</span>'}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function setStatus(ok, text){
+        document.getElementById('statusDot').classList.toggle('err', !ok);
+        document.getElementById('statusText').textContent = text;
+    }
+
+    async function loadConfig(){
+        try{
+            const res = await fetch(APPS_SCRIPT_URL + "?type=config");
+            const text = await res.text();
+            const parsed = Papa.parse(text, { header:true, skipEmptyLines:true });
+            let logoUrl = "", siteName = "";
+            for (const row of parsed.data){
+                const k = (row.key||'').trim().toLowerCase();
+                const v = (row.value||'').trim();
+                if (k === 'logo_url') logoUrl = v;
+                if (k === 'site_name') siteName = v;
+            }
+            if (siteName) document.getElementById('brandTitle').textContent = siteName;
+            const img = document.getElementById('brandLogo');
+            if (logoUrl){ img.src = logoUrl; img.style.display = 'inline-block'; }
+        }catch(e){ /* config is optional, keep defaults */ }
+    }
+
+    async function loadPlayers(){
+        setStatus(true, 'Loading live data...');
+        try{
+            const res = await fetch(APPS_SCRIPT_URL + "?type=players");
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const text = await res.text();
+            const parsed = Papa.parse(text, { header:true, skipEmptyLines:true });
+            allPlayers = parsed.data.filter(r => r.name).map(r => {
+                const tiers = {};
+                GAMEMODES.forEach(gm => tiers[gm] = (r[gm] || '').toUpperCase());
+                return { name: r.name.trim(), skin: (r.skin||'').trim(), region: (r.region||'').trim(), tiers };
+            });
+            renderList();
+            setStatus(true, `Live — ${allPlayers.length} players synced`);
+        }catch(e){
+            setStatus(false, 'Could not reach the sheet — showing last known data.');
+        }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', renderList);
+    document.getElementById('regionSelect').addEventListener('change', renderList);
+    document.getElementById('refreshBtn').addEventListener('click', () => { loadConfig(); loadPlayers(); });
+
+    loadConfig();
+    loadPlayers();
+    // Light auto-refresh so the page stays close to live without a manual click.
+    setInterval(loadPlayers, 30000);
+</script>
 
 </body>
 </html>
