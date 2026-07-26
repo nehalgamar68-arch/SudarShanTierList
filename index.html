@@ -25,6 +25,7 @@
     --lt5-foreground:#655b79; --lt5:#262a3a;
 
     --na-foreground:#d95c6a; --na:#442228;
+    --eu-foreground:#6fcf8e; --eu:#1a3a28;
     --as-foreground:#7ee0e8; --as:#173c3f;
     --none-foreground:#8a94a6; --none:#1e2939;
     --placement-1:#e5ba43; --placement-2:#808c9c; --placement-3:#b56326; --placement-other:#1e2634;
@@ -145,7 +146,8 @@
     background:var(--none);color:var(--none-foreground);
     margin-left:auto;
   }
-  .region.eu{background:var(--na);color:var(--na-foreground);}
+  .region.na{background:var(--na);color:var(--na-foreground);}
+  .region.eu{background:var(--eu);color:var(--eu-foreground);}
   .region.as{background:var(--as);color:var(--as-foreground);}
 
   .tiers{display:flex;gap:6px;flex-wrap:wrap;margin-left:6px;}
@@ -223,12 +225,12 @@
 <body>
 
 <header class="topnav">
-  <div class="brand"><img id="logoImg" alt="logo">MCTIERS</div>
+  <div class="brand"><img id="logoImg" alt="logo">SudarShanTiers</div>
   <nav class="navlinks">
-    <a href="https://nehalgamar68-arch.github.io/SudarShanTierList//" target="_blank"><img id="navHomeImg" alt="">Home</a>
+    <a href="https://nehalgamar68-arch.github.io/SudarShanTierList/" target="_blank"><img id="navHomeImg" alt="">Home</a>
     <a href="https://nehalgamar68-arch.github.io/SudarShanTierList/" target="_blank" style="color:#fff"><img id="navRankingsImg" alt="">Rankings</a>
-    <a href="https://discord.gg/EszE5Ck2J" target="_blank"><img id="navDiscordImg" alt="">Discords</a>
-    <a href="https://sudarshan.pro/" target="_blank"><img id="navApiImg" alt="">API Host</a>
+    <a href="https://discord.gg/ez8tX2WnN" target="_blank"><img id="navDiscordImg" alt="">Discords</a>
+    <a href="www.sudarshan.pro" target="_blank"><img id="navApiImg" alt="">API Hosting</a>
   </nav>
   <div class="info">
     <img id="logoImg2" alt="Logo">
@@ -244,7 +246,7 @@
 
   <div class="card">
     <div class="card-head">
-      <h1><img id="headIcon" alt="">Overall Rankings</h1>
+      <h1><img id="headIcon" alt=""><span id="headText">Overall Rankings</span></h1>
       <div class="searchwrap">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input id="searchInput" type="text" placeholder="Search player...">
@@ -278,17 +280,18 @@ const ASSETS = {"logo": "data:image/webp;base64,UklGRgQHAQBXRUJQVlA4TPgGAQAvNoPN
 
 // ---------- ORIGINAL gamemode tabs — unchanged ----------
 const GAMEMODE_TABS = [
-  {label:"Overall", icon:"gm_overall", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/", active:true},
-  {label:"LTMs", icon:"gm_ltm", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/ltm"},
-  {label:"Vanilla", icon:"gm_vanilla", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"UHC", icon:"gm_uhc", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"Pot", icon:"gm_pot", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"NethOP", icon:"gm_nethop", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"SMP", icon:"gm_smp", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"Sword", icon:"gm_sword", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"Axe", icon:"gm_axe", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
-  {label:"Mace", icon:"gm_mace", href:"https://nehalgamar68-arch.github.io/SudarShanTierList/"},
+  {label:"Overall", icon:"gm_overall", mode:"overall"},
+  {label:"LTMs", icon:"gm_ltm", mode:"ltm"},
+  {label:"Vanilla", icon:"gm_vanilla", mode:"vanilla"},
+  {label:"UHC", icon:"gm_uhc", mode:"uhc"},
+  {label:"Pot", icon:"gm_pot", mode:"pot"},
+  {label:"NethOP", icon:"gm_nethop", mode:"nethop"},
+  {label:"SMP", icon:"gm_smp", mode:"smp"},
+  {label:"Sword", icon:"gm_sword", mode:"sword"},
+  {label:"Axe", icon:"gm_axe", mode:"axe"},
+  {label:"Mace", icon:"gm_mace", mode:"mace"},
 ];
+const TIER_ORDER = ["HT1","LT1","HT2","LT2","HT3","LT3","HT4","LT4","HT5","LT5"];
 
 const PLACEMENT = { "1.":"badge_1", "2.":"badge_2", "3.":"badge_3" };
 const GM_ORDER = ["sword","axe","mace","smp","nethop","pot","uhc","vanilla"];
@@ -313,15 +316,20 @@ const players = [
     tiers:{sword:"LT2",axe:"LT2",mace:"LT2",smp:"LT2",nethop:"LT2",pot:"LT2",uhc:"LT1",vanilla:"LT3"}},
   {rank:"9.",name:"Lurrn",skin:"skin_lurrn",title:"Combat Ace",points:186,region:"eu",
     tiers:{sword:"LT2",axe:"LT4",mace:null,smp:null,nethop:"HT1",pot:"HT1",uhc:"LT3",vanilla:"HT2"}},
-  {rank:"10.",name:"catboymuce",skin:"skin_itzrealme",title:"Combat Ace",points:186,region:"as",
-    tiers:{sword:"LT3",axe:"LT4",mace:"HT4",smp:"HT5",nethop:"HT3",pot:"LT2",uhc:"LT4",vanilla:"HT5"}},
-  {rank:"11.",name:"EPLCGAMING",skin:"skin_itzrealme",title:"Combat Ace",points:100,region:"as",
-    tiers:{sword:"HT4",axe:null,mace:null,smp:null,nethop:"LT4",pot:null,uhc:null,vanilla:null}},
-  {rank:"12.",name:"piguuuu01",skin:"skin_itzrealme",title:"Combat Ace",points:100,region:"as",
-    tiers:{sword:null,axe:null,mace:null,smp:null,nethop:null,pot:null,uhc:null,vanilla:"LT3"}},
+  {rank:"10.",name:"Arsakha",skin:"skin_arsakha",title:"Combat Ace",points:177,region:"me",
+    tiers:{sword:"LT3",axe:"HT3",mace:"LT3",smp:"HT1",nethop:"LT3",pot:"HT3",uhc:"HT3",vanilla:"LT3"}},
+  {rank:"11.",name:"EPLCGAMING",skin:"https://cdn.discordapp.com/attachments/1530655807945838723/1530943997475033279/avatarBody3_1.png?ex=6a676a34&is=6a6618b4&hm=d8b0297c90b704c303793ba844723eb6bd846c445a4b9c087b2c3844f0abac9e",title:"Combat Ace",points:100,region:"as",
+    tiers:{sword:"HT4",nethop:"LT4"}},
+  {rank:"12.",name:"Piguuuuu01",skin:"https://cdn.discordapp.com/attachments/1530905454534856775/1530942868493959368/9CvSE4AAAABklEQVQDAAwvd8rUahGUAAAAAElFTkSuQmCC.png?ex=6a676927&is=6a6617a7&hm=8348e379cdca46cf077713e42a092b1cbfd471d5a8fc988fd5d2e8da5a6a42f3",title:"Combat Ace",points:100,region:"as",
+    tiers:{nethop:"LT3"}},
+  {rank:"13.",name:"GrimXtz",skin:"https://cdn.discordapp.com/attachments/1530655807945838723/1530943709368287322/avatarBody3.png?ex=6a6769ef&is=6a66186f&hm=647cd31a322bb15b599b4f1ecea39ab07ed93f3238926578a54825dd1c7142ab",title:"Combat Rookie",points:65,region:"eu",
+    tiers:{vanilla:"HT5",sword:"LT3",nethop:"LT3",pot:"LT3",uhc:"LT4",mace:"LT3",smp:"LT4"}},
+  {rank:"14.",name:"RDXSHADOW",skin:"https://cdn.discordapp.com/attachments/1320326134759559229/1530851292640055376/2Z6YNAAAAAGSURBVAMAvpwIqkEc060AAAAASUVORK5CYII.png?ex=6a6713de&is=6a65c25e&hm=421ec3e997ab99d037eed3a0a36b711833602aa00ba5bcf11dc8c686e55de7f6",title:"Combat Rookie",points:20,region:"none",
+    tiers:{sword:"HT4"}},
 ];
 
 function tierVar(t){ return t ? t.toLowerCase() : null; }
+function skinSrc(skinKey){ return ASSETS[skinKey] || skinKey; }
 
 document.getElementById('logoImg').src = ASSETS.logo;
 document.getElementById('logoImg2').src = ASSETS.logo;
@@ -332,18 +340,21 @@ document.getElementById('navApiImg').src = ASSETS.nav_api;
 document.getElementById('headIcon').src = ASSETS.gm_overall;
 
 const tabstrip = document.getElementById('tabstrip');
+const tabElements = {};
 GAMEMODE_TABS.forEach(t=>{
-  const a = document.createElement('a');
-  a.href = t.href; a.target = "_blank";
   const div = document.createElement('div');
-  div.className = 'tab' + (t.active ? ' active' : '');
+  div.className = 'tab' + (t.mode === 'overall' ? ' active' : '');
+  div.setAttribute('role','button');
+  div.tabIndex = 0;
   const img = document.createElement('img');
   img.src = ASSETS[t.icon]; img.alt = t.label;
   const label = document.createElement('strong');
   label.textContent = t.label;
   div.appendChild(img); div.appendChild(label);
-  a.appendChild(div);
-  tabstrip.appendChild(a);
+  div.addEventListener('click', ()=> selectTab(t.mode, t.label, t.icon));
+  div.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); selectTab(t.mode, t.label, t.icon); } });
+  tabstrip.appendChild(div);
+  tabElements[t.mode] = div;
 });
 
 let actx = null;
@@ -384,12 +395,13 @@ function playCloseClick(){
 const rowsEl = document.getElementById('rows');
 const noResults = document.getElementById('noResults');
 
-function buildRow(p){
+function buildRow(p, rankStr){
+  rankStr = rankStr || p.rank;
   const row = document.createElement('div');
   row.className = 'row';
   row.dataset.name = p.name.toLowerCase();
 
-  const shimmerKey = PLACEMENT[p.rank] || "badge_other";
+  const shimmerKey = PLACEMENT[rankStr] || "badge_other";
 
   let tiersHtml = '';
   GM_ORDER.forEach(gm=>{
@@ -405,14 +417,15 @@ function buildRow(p){
       </div>`;
   });
 
-  const regionLabel = p.region.toUpperCase();
-  const regionClass = p.region === 'eu' ? 'eu' : 'as';
+  const KNOWN_REGIONS = ['na','eu','as'];
+  const regionLabel = KNOWN_REGIONS.includes(p.region) ? p.region.toUpperCase() : '-';
+  const regionClass = KNOWN_REGIONS.includes(p.region) ? p.region : '';
 
   row.innerHTML = `
     <div class="rankbox">
       <img class="shimmer" src="${ASSETS[shimmerKey]}" alt="">
-      <span class="num">${p.rank}</span>
-      <img class="skin" width="56" height="56" src="${ASSETS[p.skin]}" alt="${p.name}'s Skin">
+      <span class="num">${rankStr}</span>
+      <img class="skin" width="56" height="56" src="${skinSrc(p.skin)}" alt="${p.name}'s Skin" onerror="this.style.display='none'">
     </div>
     <div class="who">
       <h2>${p.name}</h2>
@@ -425,13 +438,49 @@ function buildRow(p){
   row.addEventListener('click', ()=>{
     playCuteClick();
     row.classList.remove('pop'); void row.offsetWidth; row.classList.add('pop');
-    openModal(p);
+    openModal(p, rankStr);
   });
 
   return row;
 }
 
-players.forEach(p=> rowsEl.appendChild(buildRow(p)));
+let currentMode = 'overall';
+
+function getRankedList(mode){
+  if(mode === 'overall' || mode === 'ltm'){
+    // no separate LTM dataset in this snapshot — fall back to overall ordering
+    return players.slice().sort((a,b)=> b.points - a.points);
+  }
+  return players
+    .filter(p=> p.tiers[mode])
+    .sort((a,b)=>{
+      const ta = TIER_ORDER.indexOf(p_tier(a,mode));
+      const tb = TIER_ORDER.indexOf(p_tier(b,mode));
+      if(ta !== tb) return ta - tb;
+      return b.points - a.points;
+    });
+}
+function p_tier(p, mode){ return p.tiers[mode]; }
+
+function renderRows(mode){
+  const list = getRankedList(mode);
+  rowsEl.innerHTML = '';
+  list.forEach((p, i)=>{
+    const rankStr = (i+1) + '.';
+    rowsEl.appendChild(buildRow(p, rankStr));
+  });
+  // re-apply any active search filter
+  searchInput.dispatchEvent(new Event('input'));
+}
+
+function selectTab(mode, label, icon){
+  currentMode = mode;
+  Object.values(tabElements).forEach(el=> el.classList.remove('active'));
+  tabElements[mode].classList.add('active');
+  document.getElementById('headIcon').src = ASSETS[icon];
+  document.getElementById('headText').textContent = label + ' Rankings';
+  renderRows(mode);
+}
 
 const searchInput = document.getElementById('searchInput');
 searchInput.addEventListener('input', ()=>{
@@ -444,18 +493,20 @@ searchInput.addEventListener('input', ()=>{
   });
   noResults.style.display = visibleCount === 0 ? 'block' : 'none';
 });
+renderRows('overall');
 
 const overlay = document.getElementById('overlay');
 const closeBtn = document.getElementById('closeBtn');
 
-function openModal(p){
-  document.getElementById('mRank').textContent = 'RANK ' + p.rank.replace('.', '');
-  document.getElementById('mShimmer').src = ASSETS[PLACEMENT[p.rank] || 'badge_other'];
-  document.getElementById('mSkin').src = ASSETS[p.skin];
+function openModal(p, rankStr){
+  rankStr = rankStr || p.rank;
+  document.getElementById('mRank').textContent = 'RANK ' + rankStr.replace('.', '');
+  document.getElementById('mShimmer').src = ASSETS[PLACEMENT[rankStr] || 'badge_other'];
+  document.getElementById('mSkin').src = skinSrc(p.skin);
   document.getElementById('mSkin').alt = p.name + "'s Skin";
   document.getElementById('mName').textContent = p.name;
   document.getElementById('mTitleText').textContent = p.title + ' (' + p.points + ' points)';
-  document.getElementById('mRegion').textContent = 'Region: ' + p.region.toUpperCase();
+  document.getElementById('mRegion').textContent = 'Region: ' + (['na','eu','as'].includes(p.region) ? p.region.toUpperCase() : 'Unlisted');
 
   const mTiers = document.getElementById('mTiers');
   mTiers.innerHTML = '';
